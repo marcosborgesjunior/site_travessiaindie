@@ -55,12 +55,44 @@ jobs:
               r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
               print(fn, r.status_code, len(r.text))
               if r.status_code != 200 or "Just a moment" in r.text[:2000]:
-                  # aba /matches do evento é extra: nao derruba o snapshot
-                  if fn.endswith("-matches.html"):
+                  # extras: nao derrubam o snapshot
+                  if fn.endswith("-matches.html") or fn in (
+                      "highlights.html", "match-live.html"
+                  ):
                       print(f"::warning::pulando {url} ({r.status_code})")
                       continue
                   sys.exit(f"falha ao baixar {url}: {r.status_code}")
               open(f"hltv/snapshots/{fn}", "w", encoding="utf-8").write(r.text)
+
+          # extras: highlights + pagina do1º match AO VIVO (jogo live da FURIA etc.)
+          extras = {"highlights.html": "https://www.hltv.org/highlights"}
+          try:
+              rm = requests.get(
+                  "https://www.hltv.org/matches", impersonate="chrome",
+                  headers=H, timeout=30,
+              )
+              if rm.status_code == 200:
+                  lm = re.search(
+                      r'<div class="match-wrapper[^>]*live="true"[^>]*>.*?'
+                      r'href="(/matches/[^"]+)"',
+                      rm.text, re.S,
+                  )
+                  if lm:
+                      extras["match-live.html"] = "https://www.hltv.org" + lm.group(1)
+                      print("match live:", lm.group(1))
+          except Exception as e:  # noqa: BLE001
+              print(f"::warning::sem match live: {e}")
+
+          for fn, url in extras.items():
+              try:
+                  r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
+                  print(fn, r.status_code, len(r.text))
+                  if r.status_code == 200 and "Just a moment" not in r.text[:2000]:
+                      open(f"hltv/snapshots/{fn}", "w", encoding="utf-8").write(r.text)
+                  else:
+                      print(f"::warning::pulando {url} ({r.status_code})")
+              except Exception as e:  # noqa: BLE001
+                  print(f"::warning::falha em {url}: {e}")
           PY
 
       - name: Commit dos snapshots
