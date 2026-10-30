@@ -5,22 +5,25 @@ matches cujo qualquer time tenha a bandeira do Brasil (BR.gif/BR.png) e
 organiza os horários em JSON, convertendo o epoch canônico (data-unix) para
 America/Sao_Paulo.
 
-Cache (evita bater no site toda execução):
-- Página /matches: cache/matches-AAAA-MM-DD.html (data em São Paulo).
-  Na primeira execução do dia baixa e salva; execuções seguintes do mesmo
-  dia reusam o arquivo. --fresh força novo download.
+Sem cache: cada execução busca dados frescos, protegida por contador de
+chamadas (default20/execução) e ritmo mínimo de1 request a cada2 min
+(--max-calls / --interval) para não estressar o site.
+
+Por match o JSON traz: horário, campeonato (event_info com prêmio/datas),
+score de rounds/maps (lives), stats por jogador (K-D, kd_ratio, ADR, KAST,
+rating), MVP (maior rating), watch links e a série de mapas (md3/md5) com
+status done/live/upcoming.
 
 Casos especiais do markup HLTV:
 - Upcoming: flag do país dentro de .match-team (img.country-flag-small).
-- Ao vivo: wrapper sem .match-time e sem flag — fica de fora (sem fetch de
-  páginas de match; somente os horários da página principal interessam).
+- Ao vivo: wrapper sem .match-time e sem flag — entra com live:true; o
+  score de rounds vem do SSR do /matches; mapas/stats da página do match.
 - Um mesmo match aparece em várias colunas (pinned, calendário, live) com
-  completude diferente (uma tem evento, outra tem flag); as aparições são
-  merged campo-a-campo por match_id.
+  completude diferente; as aparições são merged campo-a-campo por match_id.
 
 Uso:
-    python scraper.py            # usa cache do dia se existir
-    python scraper.py --fresh    # baixa de novo
+    python scraper.py                 # padrão:20 chamadas,120s de intervalo
+    python scraper.py --max-calls 10 --interval 60
     python scraper.py --out x.json
 """
 
@@ -41,7 +44,18 @@ from curl_cffi import requests
 URL = "https://www.hltv.org/matches"
 BASE = "https://www.hltv.org"
 SP = ZoneInfo("America/Sao_Paulo")
-CACHE_DIR = Path(__file__).resolve().parent / "cache"
+# Sem cache: cada execução busca fresco. Proteção contra estresse do site:
+# contador de chamadas por execução + ritmo de1 request a cada2 min.
+MAX_CALLS_DEFAULT = 20
+MIN_INTERVAL_DEFAULT = 120  # segundos entre requests
+_http_calls = 0
+_max_calls = MAX_CALLS_DEFAULT
+_min_interval = MIN_INTERVAL_DEFAULT
+_last_call_ts = 0.0
+
+
+def http_calls() -> int:
+    return _http_calls
 WEEKDAYS_PT = {
     "Monday": "segunda",
     "Tuesday": "terça",
@@ -57,6 +71,20 @@ HEADERS = {
 
 
 def fetch(url: str) -> str:
+    """GET com contador de chamadas e ritmo máximo de1 request / _min_interval.
+
+    - Limite duro de _max_calls por execução (anti-estresse).
+    - Espaçamento mínimo entre requests (default120s =1 a cada2 min).
+    """
+    global _http_calls, _last_call_ts
+    if _http_calls >= _max_calls:
+        raise RuntimeError(f"limite de {_max_calls} chamadas por execução atingido")
+    wait = _min_interval - (time.monotonic() - _last_call_ts)
+    if wait > 0:
+        time.sleep(wait)
+    _last_call_ts = time.monotonic()
+    _http_calls += 1
+    print(f"[{_http_calls}/{_max_calls}] GET {url}", file=sys.stderr)
     r = requests.get(url, impersonate="chrome", headers=HEADERS, timeout=30)
     r.raise_for_status()
     if "Just a moment" in r.text[:2000]:
@@ -64,39 +92,20 @@ def fetch(url: str) -> str:
     return r.text
 
 
-def fetch_matches_page(fresh: bool = False, url: str = URL) -> tuple[str, str]:
-    """Retorna (html, origem). Cache diário em São Paulo."""
-    today = datetime.now(SP).strftime("%Y-%m-%d")
-    cache_file = CACHE_DIR / f"matches-{today}.html"
-    if cache_file.exists() and not fresh:
-        return cache_file.read_text(encoding="utf-8"), f"cache:{cache_file.name}"
-    print(f"Baixando {url} (cache do dia ainda não existe) ...", file=sys.stderr)
-    html = fetch(url)
-    CACHE_DIR.mkdir(exist_ok=True)
-    cache_file.write_text(html, encoding="utf-8")
-    return html, f"rede:{cache_file.name}"
+def fetch_matches_page(url: str = URL) -> tuple[str, str]:
+    """HTML do /matches (sem cache — sempre fresco, sujeito ao rate limit)."""
+    return fetch(url), "rede"
 
 
 EVENTS_URL = f"{BASE}/events"
 
 
-def fetch_events_index(fresh: bool = False) -> tuple[dict, str]:
-    """Índice de campeonatos (/events): id -> nome, datas, local.
+def fetch_events_index() -> tuple[dict, str]:
+    """Índice de campeonatos (/events): id -> nome, datas, local, prêmio.
 
-    1 request/dia com cache local — daí o cruzamento com os matches é
-    todo offline (data-event-id dos wrappers).
+    O cruzamento com os matches é todo offline (data-event-id dos wrappers).
     """
-    today = datetime.now(SP).strftime("%Y-%m-%d")
-    cache_file = CACHE_DIR / f"events-{today}.html"
-    if cache_file.exists() and not fresh:
-        html, origin = cache_file.read_text(encoding="utf-8"), f"cache:{cache_file.name}"
-    else:
-        print(f"Baixando {EVENTS_URL} ...", file=sys.stderr)
-        html = fetch(EVENTS_URL)
-        CACHE_DIR.mkdir(exist_ok=True)
-        cache_file.write_text(html, encoding="utf-8")
-        origin = f"rede:{cache_file.name}"
-    return parse_events_index(html), origin
+    return parse_events_index(fetch(EVENTS_URL)), "rede"
 
 
 def parse_events_index(html: str) -> dict[str, dict]:
@@ -303,6 +312,77 @@ def parse_match_stats(html: str) -> list[dict]:
     return out
 
 
+def parse_match_maps(html: str, match_live: bool = False) -> list[dict]:
+    """Mapa a mapa da página do match (div.mapholder).
+
+    Status: done (placar completo), live ("-:-" =2º tempo não iniciado, ou
+    último mapa com placar quando o match está ao vivo) ou upcoming.
+    Inclui placar por time e half-score quando existem.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    raw: list[dict] = []
+    for mh in soup.select("div.mapholder"):
+        name_el = mh.select_one(".mapname")
+        if not name_el:
+            continue
+        name = name_el.get_text(strip=True)
+
+        left = mh.select_one(".results-left .results-teamname")
+        right = mh.select_one(".results-right .results-teamname")
+        ls = mh.select_one(".results-left .results-team-score")
+        rs = mh.select_one(".results-right .results-team-score")
+        half = mh.select_one(".results-center-half-score")
+        half_txt = half.get_text(" ", strip=True) if half else None
+
+        score: dict[str, int] = {}
+        if left and right and ls and rs:
+            lsv, rsv = ls.get_text(strip=True), rs.get_text(strip=True)
+            if lsv.isdigit() and rsv.isdigit():
+                score = {
+                    left.get_text(strip=True): int(lsv),
+                    right.get_text(strip=True): int(rsv),
+                }
+        raw.append({"name": name, "score": score, "half": half_txt})
+
+    # último mapa com placar = candidato a "em curso" quando o match é live
+    last_scored = max(
+        (i for i, m in enumerate(raw) if m["score"]), default=None
+    )
+
+    maps: list[dict] = []
+    for i, m in enumerate(raw):
+        if not m["score"]:
+            status = "upcoming"
+        elif m["half"] and "-:-" in m["half"]:
+            status = "live"
+        elif match_live and i == last_scored:
+            status = "live"
+        else:
+            status = "done"
+        entry: dict = {"name": m["name"], "status": status}
+        if m["score"]:
+            entry["score"] = m["score"]
+        if m["half"]:
+            entry["half"] = m["half"]
+        maps.append(entry)
+    return maps
+
+
+def pick_mvp(stats: list[dict]) -> dict | None:
+    """Melhor jogador da partida: maior rating (empate → maior kd_ratio)."""
+    best: tuple | None = None
+    best_p: dict | None = None
+    for st in stats:
+        for p in st["players"]:
+            rating = p.get("rating")
+            if rating is None:
+                continue
+            key = (rating, p.get("kd_ratio") or 0.0)
+            if best is None or key > best:
+                best, best_p = key, {**p, "team": st["team"]}
+    return best_p
+
+
 def parse_watch_links(html: str) -> list[str]:
     """Links externos de transmissão (stream-box) da página do match."""
     soup = BeautifulSoup(html, "html.parser")
@@ -314,21 +394,13 @@ def parse_watch_links(html: str) -> list[str]:
     return seen
 
 
-def fetch_match_page(match_id: str, url: str, fresh: bool = False) -> str | None:
-    """Página de um match BR com cache diário. None se falhar (não fatal)."""
-    today = datetime.now(SP).strftime("%Y-%m-%d")
-    cache_file = CACHE_DIR / f"match-{match_id}-{today}.html"
-    if cache_file.exists() and not fresh:
-        return cache_file.read_text(encoding="utf-8")
+def fetch_match_page(match_id: str, url: str) -> str | None:
+    """Página de um match BR (sem cache, sujeito ao rate limit). None se falhar."""
     try:
-        html = fetch(url)
-    except Exception as e:  # noqa: BLE001
+        return fetch(url)
+    except Exception as e:  # noqa: BLE001 - não derruba o run
         print(f"  ! match page {match_id}: {e}", file=sys.stderr)
         return None
-    CACHE_DIR.mkdir(exist_ok=True)
-    cache_file.write_text(html, encoding="utf-8")
-    time.sleep(0.6)  # respiro entre fetches de páginas de match
-    return html
 
 
 def parse_team(wrapper_team) -> dict:
@@ -515,25 +587,51 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
         return out or None
 
     for mt in matches:
-        item = {
-            "time": None,
-            "event": mt["event"],
-            "event_id": mt.get("event_id"),
-            "format": mt["format"],
-            "live": mt["live"],
-            "stars": mt["stars"],
-            "match_id": mt["match_id"],
-            "url": mt["url"],
-            "teams": [
-                {"name": t["name"], "country": t["country"], "is_brazil": t["is_brazil"]}
-                for t in mt["teams"]
-            ],
-        }
+        item: dict = {}
+
+        # Cabeçalho: série de mapas com status (md3/md5)
+        maps = mt.get("maps") or []
+        if maps:
+            fmt = (mt.get("format") or "").lower()
+            md = {"bo3": "md3", "bo5": "md5"}.get(fmt) or {
+                3: "md3",
+                5: "md5",
+            }.get(len(maps))
+            item["series"] = {
+                "format": md,
+                "current_map": next(
+                    (m["name"] for m in maps if m["status"] == "live"), None
+                ),
+                "next_map": next(
+                    (m["name"] for m in maps if m["status"] == "upcoming"), None
+                ),
+                "finished_maps": [m["name"] for m in maps if m["status"] == "done"],
+                "maps": maps,
+            }
+
+        item.update(
+            {
+                "time": None,
+                "event": mt["event"],
+                "event_id": mt.get("event_id"),
+                "format": mt["format"],
+                "live": mt["live"],
+                "stars": mt["stars"],
+                "match_id": mt["match_id"],
+                "url": mt["url"],
+                "teams": [
+                    {"name": t["name"], "country": t["country"], "is_brazil": t["is_brazil"]}
+                    for t in mt["teams"]
+                ],
+            }
+        )
         sc = score_named(mt)
         if sc:
             item["score"] = sc
         if mt.get("stats"):
             item["stats"] = mt["stats"]
+        if mt.get("mvp"):
+            item["mvp"] = mt["mvp"]
         if mt.get("watch"):
             item["watch"] = mt["watch"]
 
@@ -612,15 +710,44 @@ def print_table(data: dict) -> None:
             flags = "".join(" [BR]" if t["is_brazil"] else "" for t in mt["teams"])
             live = " (AO VIVO)" if mt["live"] else ""
             ev = mt["event"] or "-"
-            print(f"  {mt['time']}  {vs}{flags}  — {ev} ({mt['format'] or '?'}){live}")
+            line = f"  {mt['time']}  {vs}{flags}  — {ev} ({mt['format'] or '?'}){live}"
+            s = mt.get("series")
+            if s:
+                parts = []
+                for m in s["maps"]:
+                    mark = {"done": "✓", "live": "●", "upcoming": "○"}.get(
+                        m["status"], "?"
+                    )
+                    sc = m.get("score")
+                    sc_txt = ""
+                    if sc:
+                        sc_txt = " " + "-".join(str(v) for v in sc.values())
+                    parts.append(f"{m['name']}{mark}{sc_txt}")
+                line += f"\n      mapas ({s['format'] or '?'}): " + " → ".join(parts)
+            if mt.get("mvp"):
+                p = mt["mvp"]
+                line += f"\n      MVP: {p['nick']} ({p.get('team')}) — rating {p.get('rating')}"
+            print(line)
 
 
 def main() -> None:
+    global _max_calls, _min_interval
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description="Scrapper HLTV: jogos do Brasil")
     ap.add_argument("--out", default="brazil-matches.json", help="arquivo JSON de saída")
-    ap.add_argument("--fresh", action="store_true", help="ignora cache e baixa de novo")
+    ap.add_argument(
+        "--max-calls",
+        type=int,
+        default=MAX_CALLS_DEFAULT,
+        help=f"limite de requests HTTP por execução (default {MAX_CALLS_DEFAULT})",
+    )
+    ap.add_argument(
+        "--interval",
+        type=int,
+        default=MIN_INTERVAL_DEFAULT,
+        help=f"segundos mínimos entre requests (default {MIN_INTERVAL_DEFAULT} =1 a cada2 min)",
+    )
     ap.add_argument(
         "--url",
         default=URL,
@@ -632,11 +759,13 @@ def main() -> None:
     ap.add_argument(
         "--events-list",
         default=None,
-        help="arquivo HTML de /events já baixado (validação offline) — default: baixa com cache diário",
+        help="arquivo HTML de /events já baixado (validação offline) — default: baixa via rede",
     )
     args = ap.parse_args()
+    _max_calls = max(1, args.max_calls)
+    _min_interval = max(0, args.interval)
 
-    html, origin = fetch_matches_page(fresh=args.fresh, url=args.url)
+    html, origin = fetch_matches_page(url=args.url)
     print(f"HTML: {origin}", file=sys.stderr)
     matches = parse_page(html)
     if not matches:
@@ -651,17 +780,24 @@ def main() -> None:
             )
             print(f"Events: arquivo:{args.events_list}", file=sys.stderr)
         else:
-            events_index, ev_origin = fetch_events_index(fresh=args.fresh)
+            events_index, ev_origin = fetch_events_index()
             print(f"Events: {ev_origin}", file=sys.stderr)
     except Exception as e:  # noqa: BLE001 - matches continuam publicáveis
         print(f"! indice de eventos indisponivel ({e}); seguindo sem event_info", file=sys.stderr)
     print(f"Eventos no indice: {len(events_index)}", file=sys.stderr)
 
-    # Stats por jogador + links de transmissão (páginas dos matches BR,
-    # cache diário — ~10 req/dia com respiro; falha não derruba o run)
+    # Stats, mapas, MVP e links de transmissão (páginas dos matches BR;
+    # falha ou limite de chamadas não derrubam o run)
     print(f"Paginas de match: {len(matches)} ...", file=sys.stderr)
     for mt in matches:
-        page = fetch_match_page(mt["match_id"], mt["url"], fresh=args.fresh)
+        if http_calls() >= _max_calls:
+            print(
+                f"  ! limite de {_max_calls} chamadas atingido; "
+                "pulando paginas restantes",
+                file=sys.stderr,
+            )
+            break
+        page = fetch_match_page(mt["match_id"], mt["url"])
         if not page:
             continue
         stats = parse_match_stats(page)
@@ -669,16 +805,25 @@ def main() -> None:
             names = {t["name"].casefold() for t in mt["teams"]}
             picked = [s for s in stats if s["team"].casefold() in names]
             mt["stats"] = picked or stats
+            mt["mvp"] = pick_mvp(mt["stats"])
+        maps = parse_match_maps(page, match_live=mt["live"])
+        if maps:
+            mt["maps"] = maps
         watch = parse_watch_links(page)
         if watch:
             mt["watch"] = watch
 
     data = build_output(matches, events_index)
+    data["http_calls"] = http_calls()
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print_table(data)
-    print(f"\nTotal: {data['total_matches']} matches -> {args.out}")
+    print(
+        f"\nTotal: {data['total_matches']} matches -> {args.out} "
+        f"| chamadas HTTP: {http_calls()}/{_max_calls}",
+        file=sys.stderr,
+    )
 
 
 if __name__ == "__main__":
