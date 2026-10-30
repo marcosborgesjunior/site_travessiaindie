@@ -76,6 +76,99 @@ def fetch_matches_page(fresh: bool = False, url: str = URL) -> tuple[str, str]:
     return html, f"rede:{cache_file.name}"
 
 
+EVENTS_URL = f"{BASE}/events"
+
+
+def fetch_events_index(fresh: bool = False) -> tuple[dict, str]:
+    """Índice de campeonatos (/events): id -> nome, datas, local.
+
+    1 request/dia com cache local — daí o cruzamento com os matches é
+    todo offline (data-event-id dos wrappers).
+    """
+    today = datetime.now(SP).strftime("%Y-%m-%d")
+    cache_file = CACHE_DIR / f"events-{today}.html"
+    if cache_file.exists() and not fresh:
+        html, origin = cache_file.read_text(encoding="utf-8"), f"cache:{cache_file.name}"
+    else:
+        print(f"Baixando {EVENTS_URL} ...", file=sys.stderr)
+        html = fetch(EVENTS_URL)
+        CACHE_DIR.mkdir(exist_ok=True)
+        cache_file.write_text(html, encoding="utf-8")
+        origin = f"rede:{cache_file.name}"
+    return parse_events_index(html), origin
+
+
+def parse_events_index(html: str) -> dict[str, dict]:
+    """Extrai de /events: id -> {name, start_ms, end_ms, location, top_teams}.
+
+    Duas fontes de card: a.big-event (upcoming, agrupados por mês) e
+    a.ongoing-event (campeonatos em andamento) — os matches BR vivem
+    principalmente nas ongoing.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    index: dict[str, dict] = {}
+
+    def merge(event_id: str, data: dict) -> None:
+        cur = index.get(event_id, {})
+        for k, v in data.items():
+            if v is not None and not cur.get(k):
+                cur[k] = v
+        index[event_id] = cur
+
+    for card in soup.select("a.big-event, a.ongoing-event"):
+        href = card.get("href") or ""
+        m = re.search(r"/events/(\d+)/", str(href))
+        if not m:
+            continue
+        event_id = m.group(1)
+
+        name = None
+        for sel in (".big-event-name", ".event-name-small .text-ellipsis", "img.logo"):
+            el = card.select_one(sel)
+            if el:
+                name = (
+                    el.get("title")
+                    if el.name == "img"
+                    else el.get_text(strip=True)
+                )
+                if name:
+                    break
+
+        # datas:1º span data-unix = início, 2º = fim (padrão igual nos dois cards)
+        unics = [
+            int(s["data-unix"]) for s in card.select("[data-unix]") if s.get("data-unix")
+        ]
+        start_ms = unics[0] if unics else None
+        end_ms = unics[1] if len(unics) > 1 else None
+
+        loc_el = card.select_one(".big-event-location")
+        loc_flag = card.select_one(".location-top-teams img.flag")
+        location = None
+        if loc_el:
+            location = loc_el.get_text(strip=True)
+            if loc_flag:
+                country = loc_flag.get("title") or loc_flag.get("alt")
+                location = f"{location} ({country})" if country else location
+
+        top_teams = [
+            img.get("title") or img.get("alt")
+            for img in card.select("img.small-team-logo")
+        ]
+
+        merge(
+            event_id,
+            {
+                "name": name,
+                "start_ms": start_ms,
+                "end_ms": end_ms,
+                "location": location,
+                "top_teams": [t for t in top_teams if t],
+                "url": f"{BASE}{href}",
+            },
+        )
+    return index
+
+
 def is_brazil_flag(img) -> bool:
     if img is None:
         return False
@@ -128,6 +221,7 @@ def parse_match(wrapper, section_date: str | None) -> dict:
         "unix_ms": unix_ms,
         "hltv_section_date": section_date,
         "event": event,
+        "event_id": wrapper.get("data-event-id"),
         "format": fmt,
         "live": live,
         "stars": int(wrapper.get("data-stars") or 0),
@@ -171,6 +265,8 @@ def dedup_by_id(matches: list[dict]) -> list[dict]:
                 base["event"] = other["event"]
             if base["format"] is None and other["format"] is not None:
                 base["format"] = other["format"]
+            if base.get("event_id") is None and other.get("event_id"):
+                base["event_id"] = other["event_id"]
             if base["stars"] == 0 and other["stars"] > 0:
                 base["stars"] = other["stars"]
             if not base["teams"]:
@@ -223,13 +319,15 @@ def parse_page(html: str) -> list[dict]:
     return sorted(br, key=lambda x: x["unix_ms"] or 0)
 
 
-def build_output(matches: list[dict]) -> dict:
+def build_output(matches: list[dict], events_index: dict[str, dict] | None = None) -> dict:
+    events_index = events_index or {}
     days: dict[str, list[dict]] = {}
     for mt in matches:
         dt_sp = datetime.fromtimestamp(mt["unix_ms"] / 1000, tz=SP)
         item = {
             "time": dt_sp.strftime("%H:%M"),
             "event": mt["event"],
+            "event_id": mt.get("event_id"),
             "format": mt["format"],
             "live": mt["live"],
             "stars": mt["stars"],
@@ -240,6 +338,23 @@ def build_output(matches: list[dict]) -> dict:
                 for t in mt["teams"]
             ],
         }
+        # Cruza com /events: datas completas do campeonato, local, URL
+        info = events_index.get(mt.get("event_id") or "")
+        if info:
+            if not item["event"]:
+                item["event"] = info["name"]
+            ev = {"name": info["name"], "url": info["url"]}
+            if info.get("start_ms"):
+                ev["start"] = datetime.fromtimestamp(
+                    info["start_ms"] / 1000, tz=SP
+                ).strftime("%Y-%m-%d")
+            if info.get("end_ms"):
+                ev["end"] = datetime.fromtimestamp(info["end_ms"] / 1000, tz=SP).strftime(
+                    "%Y-%m-%d"
+                )
+            if info.get("location"):
+                ev["location"] = info["location"]
+            item["event_info"] = ev
         days.setdefault(dt_sp.strftime("%Y-%m-%d"), []).append(item)
 
     out_days = []
@@ -283,6 +398,11 @@ def main() -> None:
             "default: direto do HLTV"
         ),
     )
+    ap.add_argument(
+        "--events-list",
+        default=None,
+        help="arquivo HTML de /events já baixado (validação offline) — default: baixa com cache diário",
+    )
     args = ap.parse_args()
 
     html, origin = fetch_matches_page(fresh=args.fresh, url=args.url)
@@ -291,7 +411,22 @@ def main() -> None:
     if not matches:
         raise SystemExit("Nenhum match com bandeira do Brasil encontrado (markup mudou?).")
 
-    data = build_output(matches)
+    # Índice de campeonatos: falha não derruba o run (só perde event_info)
+    events_index: dict[str, dict] = {}
+    try:
+        if args.events_list:
+            events_index = parse_events_index(
+                Path(args.events_list).read_text(encoding="utf-8")
+            )
+            print(f"Events: arquivo:{args.events_list}", file=sys.stderr)
+        else:
+            events_index, ev_origin = fetch_events_index(fresh=args.fresh)
+            print(f"Events: {ev_origin}", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001 - matches continuam publicáveis
+        print(f"! indice de eventos indisponivel ({e}); seguindo sem event_info", file=sys.stderr)
+    print(f"Eventos no indice: {len(events_index)}", file=sys.stderr)
+
+    data = build_output(matches, events_index)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 

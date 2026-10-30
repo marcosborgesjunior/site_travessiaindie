@@ -55,6 +55,10 @@ jobs:
               r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
               print(fn, r.status_code, len(r.text))
               if r.status_code != 200 or "Just a moment" in r.text[:2000]:
+                  # aba /matches do evento é extra: nao derruba o snapshot
+                  if fn.endswith("-matches.html"):
+                      print(f"::warning::pulando {url} ({r.status_code})")
+                      continue
                   sys.exit(f"falha ao baixar {url}: {r.status_code}")
               open(f"hltv/snapshots/{fn}", "w", encoding="utf-8").write(r.text)
           PY
