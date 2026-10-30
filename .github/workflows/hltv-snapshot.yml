@@ -98,6 +98,30 @@ jobs:
                   print(f"::warning::falha em {url}: {e}")
                   status.append(f"{fn}: EXC {e} <- {url}")
 
+          # pagina de stats POR MAPA finalizado (botao STATS do mapholder;
+          # o mapa live ainda nao tem link — fica vazio durante o jogo)
+          ml_path = "hltv/snapshots/match-live.html"
+          if os.path.exists(ml_path):
+              try:
+                  html_ml = open(ml_path, encoding="utf-8").read()
+                  mm = re.search(
+                      r'href="(/stats/matches/mapstatsid/[^"]+)"', html_ml
+                  )
+                  if mm:
+                      url = "https://www.hltv.org" + mm.group(1)
+                      r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
+                      print("mapstats.html", r.status_code, len(r.text))
+                      status.append(f"mapstats.html: HTTP {r.status_code} <- {url}")
+                      if r.status_code == 200 and "Just a moment" not in r.text[:2000]:
+                          open("hltv/snapshots/mapstats.html", "w", encoding="utf-8").write(r.text)
+                      else:
+                          print(f"::warning::pulando {url} ({r.status_code})")
+                  else:
+                      status.append("mapstats.html: SKIP (sem link no match-live)")
+              except Exception as e:  # noqa: BLE001
+                  print(f"::warning::mapstats: {e}")
+                  status.append(f"mapstats.html: EXC {e}")
+
           open("hltv/snapshots/STATUS.txt", "w", encoding="utf-8").write(
               "\n".join(status) + "\n"
           )
