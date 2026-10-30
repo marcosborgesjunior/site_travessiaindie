@@ -2,4 +2,4 @@ events-list.html: HTTP 200 <- https://www.hltv.org/events
 event-8251.html: HTTP 200 <- https://www.hltv.org/events/8251/blast-rivals-2026-season-2
 event-8251-matches.html: HTTP 200 <- https://www.hltv.org/events/8251/matches
 highlights.html: HTTP 404 <- https://www.hltv.org/highlights
-match-live.html: HTTP 200 <- https://www.hltv.org/matches/2399757/mouz-vs-furia-pgl-masters-bucharest-2026
+mapstats.html: HTTP 403 <- https://www.hltv.org/stats/matches/mapstatsid/243227/mouz-vs-furia
