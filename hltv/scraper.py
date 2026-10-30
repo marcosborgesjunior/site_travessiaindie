@@ -155,6 +155,29 @@ def parse_events_index(html: str) -> dict[str, dict]:
             for img in card.select("img.small-team-logo")
         ]
 
+        # Premiação / formato (cards upcoming trazem a tabela additional-info)
+        prize = None
+        teams_count = None
+        for td in card.select(".additional-info td.col-value"):
+            if "col-date" in (td.get("class") or []):
+                continue
+            txt = td.get_text(strip=True)
+            title = str(td.get("title") or "")
+            if "$" in txt or title.startswith("$"):
+                prize = txt or title
+            elif txt.isdigit():
+                teams_count = int(txt)
+
+        # Distribuição da premiação (tooltip escondido no card)
+        distribution = {}
+        for row in card.select(".moneyShare-popup .moneyShare-row"):
+            k = row.select_one(".moneyShare-row-left")
+            v = row.select_one(".moneyShare-row-right")
+            if k and v:
+                key = k.get_text(strip=True).rstrip(":").lower().replace(" ", "_")
+                distribution[key] = v.get_text(strip=True)
+        lan = bool(card.select_one(".lan-marker"))
+
         merge(
             event_id,
             {
@@ -163,6 +186,10 @@ def parse_events_index(html: str) -> dict[str, dict]:
                 "end_ms": end_ms,
                 "location": location,
                 "top_teams": [t for t in top_teams if t],
+                "prize": prize,
+                "prize_distribution": distribution or None,
+                "teams_count": teams_count,
+                "lan": lan,
                 "url": f"{BASE}{href}",
             },
         )
@@ -196,14 +223,19 @@ BR_TEAM_NAMES = {
     "kabum",
     "los héroes",
     "br crowd",
-    "bestia",  # sede BR no cenário LATAM/BR (flag BR no markup do HLTV)
 }
+
+# Correção manual: o HLTV às vezes renderiza flag BR errada; o usuário
+# confirmou que Bestia NÃO é brasileiro (é argentina).
+BR_EXCLUDED_NAMES = {"bestia"}
 
 
 def is_brazil_team_name(name: str | None) -> bool:
     if not name:
         return False
     n = name.strip().casefold()
+    if n in BR_EXCLUDED_NAMES:
+        return False
     return n in BR_TEAM_NAMES or n.endswith(" br")
 
 
@@ -213,7 +245,11 @@ def parse_team(wrapper_team) -> dict:
     flag = wrapper_team.select_one("img.country-flag-small, img.flag")
     country = (flag.get("title") or flag.get("alt")) if flag else None
     brazil = is_brazil_flag(flag)
-    if not brazil and is_brazil_team_name(name):
+    if name.strip().casefold() in BR_EXCLUDED_NAMES:
+        # exceção conhecida sobrepõe até a bandeira exibida pelo HLTV
+        brazil = False
+        country = None if country == "Brazil" else country
+    elif not brazil and is_brazil_team_name(name):
         # wrapper sem tag de bandeira: reconhece pelo nome do time
         brazil = True
         country = country or "Brazil"
@@ -389,6 +425,14 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
                 )
             if info.get("location"):
                 ev["location"] = info["location"]
+            if info.get("prize"):
+                ev["prize"] = info["prize"]
+            if info.get("prize_distribution"):
+                ev["prize_distribution"] = info["prize_distribution"]
+            if info.get("teams_count") is not None:
+                ev["teams_count"] = info["teams_count"]
+            if info.get("lan"):
+                ev["lan"] = True
             item["event_info"] = ev
         days.setdefault(dt_sp.strftime("%Y-%m-%d"), []).append(item)
 

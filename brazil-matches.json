@@ -1,15 +1,131 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-10-30T15:42:51+00:00",
+  "scraped_at": "2026-10-30T15:50:39+00:00",
   "timezone": "America/Sao_Paulo",
-  "total_matches": 6,
+  "total_matches": 10,
   "days": [
     {
       "date": "2026-10-30",
       "weekday": "sexta",
       "matches": [
         {
-          "time": "13:00",
+          "time": "10:00",
+          "event": "Stake Ranked Episode 5",
+          "event_id": "9257",
+          "format": "bo3",
+          "live": false,
+          "stars": 1,
+          "match_id": "2399717",
+          "url": "https://www.hltv.org/matches/2399717/mibr-vs-eternal-fire-stake-ranked-episode-5",
+          "teams": [
+            {
+              "name": "MIBR",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Eternal Fire",
+              "country": null,
+              "is_brazil": false
+            }
+          ],
+          "event_info": {
+            "name": "Stake Ranked Episode 5",
+            "url": "https://www.hltv.org/events/9257/stake-ranked-episode-5",
+            "start": "2026-10-27",
+            "end": "2026-10-30",
+            "lan": true
+          }
+        },
+        {
+          "time": "10:00",
+          "event": "Gamers Club Masters VII",
+          "event_id": "9292",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399952",
+          "url": "https://www.hltv.org/matches/2399952/quintessncia-vs-naocopulas-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "QUINTESSÊNCIA",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "NAOCOPULAS",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ],
+          "event_info": {
+            "name": "Gamers Club Masters VII",
+            "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
+            "start": "2026-10-29",
+            "end": "2026-11-01",
+            "lan": true
+          }
+        },
+        {
+          "time": "10:00",
+          "event": "FiRe Last Chance 2026",
+          "event_id": "9421",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399970",
+          "url": "https://www.hltv.org/matches/2399970/fluxo-vs-signatus-fire-last-chance-2026",
+          "teams": [
+            {
+              "name": "Fluxo",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Signatus",
+              "country": null,
+              "is_brazil": false
+            }
+          ],
+          "event_info": {
+            "name": "FiRe Last Chance 2026",
+            "url": "https://www.hltv.org/events/9421/fire-last-chance-2026",
+            "start": "2026-10-29",
+            "end": "2026-11-01",
+            "lan": true
+          }
+        },
+        {
+          "time": "12:00",
+          "event": "PGL Masters Bucharest 2026",
+          "event_id": "8050",
+          "format": "bo3",
+          "live": false,
+          "stars": 5,
+          "match_id": "2399757",
+          "url": "https://www.hltv.org/matches/2399757/mouz-vs-furia-pgl-masters-bucharest-2026",
+          "teams": [
+            {
+              "name": "MOUZ",
+              "country": null,
+              "is_brazil": false
+            },
+            {
+              "name": "FURIA",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ],
+          "event_info": {
+            "name": "PGL Masters Bucharest 2026",
+            "url": "https://www.hltv.org/events/8050/pgl-masters-bucharest-2026",
+            "start": "2026-10-24",
+            "end": "2026-10-31",
+            "lan": true
+          }
+        },
+        {
+          "time": "13:30",
           "event": "Gamers Club Masters VII",
           "event_id": "9292",
           "format": "bo3",
@@ -25,43 +141,16 @@
             },
             {
               "name": "ALKA",
-              "country": null,
-              "is_brazil": false
+              "country": "Brazil",
+              "is_brazil": true
             }
           ],
           "event_info": {
             "name": "Gamers Club Masters VII",
             "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
             "start": "2026-10-29",
-            "end": "2026-11-01"
-          }
-        },
-        {
-          "time": "16:30",
-          "event": "FiRe Last Chance 2026",
-          "event_id": "9421",
-          "format": "bo3",
-          "live": false,
-          "stars": 0,
-          "match_id": "2399975",
-          "url": "https://www.hltv.org/matches/2399975/bestia-vs-bth-fire-last-chance-2026",
-          "teams": [
-            {
-              "name": "BESTIA",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "BTH",
-              "country": null,
-              "is_brazil": false
-            }
-          ],
-          "event_info": {
-            "name": "FiRe Last Chance 2026",
-            "url": "https://www.hltv.org/events/9421/fire-last-chance-2026",
-            "start": "2026-10-29",
-            "end": "2026-11-01"
+            "end": "2026-11-01",
+            "lan": true
           }
         },
         {
@@ -89,7 +178,37 @@
             "name": "Gamers Club Masters VII",
             "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
             "start": "2026-10-29",
-            "end": "2026-11-01"
+            "end": "2026-11-01",
+            "lan": true
+          }
+        },
+        {
+          "time": "20:30",
+          "event": "Gamers Club Masters VII",
+          "event_id": "9292",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399955",
+          "url": "https://www.hltv.org/matches/2399955/dendele-vs-turma-do-pagode-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "DENDELE",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Turma do Pagode",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ],
+          "event_info": {
+            "name": "Gamers Club Masters VII",
+            "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
+            "start": "2026-10-29",
+            "end": "2026-11-01",
+            "lan": true
           }
         }
       ]
@@ -124,7 +243,13 @@
             "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
             "start": "2026-11-02",
             "end": "2026-11-08",
-            "location": "Beijing, China (China)"
+            "location": "Beijing, China (China)",
+            "prize": "$1,250,000",
+            "prize_distribution": {
+              "player_share": "$300,000",
+              "club_share": "$950,000"
+            },
+            "teams_count": 16
           }
         },
         {
@@ -153,7 +278,13 @@
             "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
             "start": "2026-11-02",
             "end": "2026-11-08",
-            "location": "Beijing, China (China)"
+            "location": "Beijing, China (China)",
+            "prize": "$1,250,000",
+            "prize_distribution": {
+              "player_share": "$300,000",
+              "club_share": "$950,000"
+            },
+            "teams_count": 16
           }
         }
       ]
@@ -188,7 +319,13 @@
             "url": "https://www.hltv.org/events/8251/blast-rivals-2026-season-2",
             "start": "2026-11-11",
             "end": "2026-11-15",
-            "location": "Chek Lap Kok, Hong Kong (Hong Kong)"
+            "location": "Chek Lap Kok, Hong Kong (Hong Kong)",
+            "prize": "$1,000,000",
+            "prize_distribution": {
+              "player_share": "$350,000",
+              "club_share": "$650,000"
+            },
+            "teams_count": 8
           }
         }
       ]
