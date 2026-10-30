@@ -36,6 +36,7 @@ jobs:
 
           H = {"Accept-Language": "en-US,en;q=0.9"}
           os.makedirs("hltv/snapshots", exist_ok=True)
+          status = []
 
           urls = {
               "events-list.html": "https://www.hltv.org/events",
@@ -54,6 +55,7 @@ jobs:
           for fn, url in urls.items():
               r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
               print(fn, r.status_code, len(r.text))
+              status.append(f"{fn}: HTTP {r.status_code} <- {url}")
               if r.status_code != 200 or "Just a moment" in r.text[:2000]:
                   # extras: nao derrubam o snapshot
                   if fn.endswith("-matches.html") or fn in (
@@ -87,12 +89,18 @@ jobs:
               try:
                   r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
                   print(fn, r.status_code, len(r.text))
+                  status.append(f"{fn}: HTTP {r.status_code} <- {url}")
                   if r.status_code == 200 and "Just a moment" not in r.text[:2000]:
                       open(f"hltv/snapshots/{fn}", "w", encoding="utf-8").write(r.text)
                   else:
                       print(f"::warning::pulando {url} ({r.status_code})")
               except Exception as e:  # noqa: BLE001
                   print(f"::warning::falha em {url}: {e}")
+                  status.append(f"{fn}: EXC {e} <- {url}")
+
+          open("hltv/snapshots/STATUS.txt", "w", encoding="utf-8").write(
+              "\n".join(status) + "\n"
+          )
           PY
 
       - name: Commit dos snapshots
