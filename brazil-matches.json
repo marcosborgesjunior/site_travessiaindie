@@ -1,338 +1,1121 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-10-30T16:38:07+00:00",
+  "scraped_at": "2026-10-30T18:00:24+00:00",
   "timezone": "America/Sao_Paulo",
-  "total_matches": 10,
-  "live": [],
+  "total_matches": 7,
+  "live": [
+    {
+      "series": {
+        "format": "md3",
+        "current_map": "Cache",
+        "next_map": null,
+        "finished_maps": [
+          "Dust2",
+          "Mirage"
+        ],
+        "maps": [
+          {
+            "name": "Dust2",
+            "status": "done",
+            "score": {
+              "MOUZ": 6,
+              "FURIA": 13
+            },
+            "half": "( 6 : 6 ; 0 : 7 )",
+            "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243227/mouz-vs-furia",
+            "players": [
+              {
+                "nick": "xertioN",
+                "kills": 14,
+                "deaths": 14,
+                "kd_ratio": 1.0,
+                "adr": 73.4,
+                "kast": 68.4,
+                "rating": 1.13,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "PR",
+                "kills": 12,
+                "deaths": 17,
+                "kd_ratio": 0.71,
+                "adr": 80.3,
+                "kast": 52.6,
+                "rating": 1.0,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "torzsi",
+                "kills": 11,
+                "deaths": 15,
+                "kd_ratio": 0.73,
+                "adr": 66.8,
+                "kast": 73.7,
+                "rating": 0.78,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "xelex",
+                "kills": 6,
+                "deaths": 13,
+                "kd_ratio": 0.46,
+                "adr": 44.8,
+                "kast": 63.2,
+                "rating": 0.6,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "Spinx",
+                "kills": 7,
+                "deaths": 15,
+                "kd_ratio": 0.47,
+                "adr": 58.9,
+                "kast": 47.4,
+                "rating": 0.51,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "molodoy",
+                "kills": 24,
+                "deaths": 9,
+                "kd_ratio": 2.67,
+                "adr": 98.9,
+                "kast": 89.5,
+                "rating": 1.86,
+                "team": "FURIA"
+              },
+              {
+                "nick": "YEKINDAR",
+                "kills": 16,
+                "deaths": 12,
+                "kd_ratio": 1.33,
+                "adr": 106.5,
+                "kast": 84.2,
+                "rating": 1.51,
+                "team": "FURIA"
+              },
+              {
+                "nick": "yuurih",
+                "kills": 14,
+                "deaths": 8,
+                "kd_ratio": 1.75,
+                "adr": 68.8,
+                "kast": 84.2,
+                "rating": 1.42,
+                "team": "FURIA"
+              },
+              {
+                "nick": "KSCERATO",
+                "kills": 11,
+                "deaths": 8,
+                "kd_ratio": 1.38,
+                "adr": 62.5,
+                "kast": 73.7,
+                "rating": 1.31,
+                "team": "FURIA"
+              },
+              {
+                "nick": "FalleN",
+                "kills": 9,
+                "deaths": 13,
+                "kd_ratio": 0.69,
+                "adr": 58.0,
+                "kast": 78.9,
+                "rating": 0.85,
+                "team": "FURIA"
+              }
+            ],
+            "mvp": {
+              "nick": "molodoy",
+              "kills": 24,
+              "deaths": 9,
+              "kd_ratio": 2.67,
+              "adr": 98.9,
+              "kast": 89.5,
+              "rating": 1.86,
+              "team": "FURIA"
+            }
+          },
+          {
+            "name": "Mirage",
+            "status": "done",
+            "score": {
+              "MOUZ": 13,
+              "FURIA": 9
+            },
+            "half": "( 4 : 8 ; 9 : 1 )",
+            "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243235/furia-vs-mouz",
+            "players": [
+              {
+                "nick": "Spinx",
+                "kills": 21,
+                "deaths": 13,
+                "kd_ratio": 1.62,
+                "adr": 103.2,
+                "kast": 68.2,
+                "rating": 1.83,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "PR",
+                "kills": 20,
+                "deaths": 15,
+                "kd_ratio": 1.33,
+                "adr": 81.5,
+                "kast": 77.3,
+                "rating": 1.36,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "torzsi",
+                "kills": 14,
+                "deaths": 12,
+                "kd_ratio": 1.17,
+                "adr": 64.6,
+                "kast": 59.1,
+                "rating": 1.08,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "xertioN",
+                "kills": 10,
+                "deaths": 18,
+                "kd_ratio": 0.56,
+                "adr": 64.8,
+                "kast": 81.8,
+                "rating": 0.89,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "xelex",
+                "kills": 8,
+                "deaths": 14,
+                "kd_ratio": 0.57,
+                "adr": 59.3,
+                "kast": 68.2,
+                "rating": 0.87,
+                "team": "MOUZ"
+              },
+              {
+                "nick": "KSCERATO",
+                "kills": 24,
+                "deaths": 15,
+                "kd_ratio": 1.6,
+                "adr": 110.1,
+                "kast": 77.3,
+                "rating": 1.42,
+                "team": "FURIA"
+              },
+              {
+                "nick": "YEKINDAR",
+                "kills": 16,
+                "deaths": 15,
+                "kd_ratio": 1.07,
+                "adr": 77.1,
+                "kast": 68.2,
+                "rating": 1.16,
+                "team": "FURIA"
+              },
+              {
+                "nick": "yuurih",
+                "kills": 14,
+                "deaths": 15,
+                "kd_ratio": 0.93,
+                "adr": 74.0,
+                "kast": 63.6,
+                "rating": 0.9,
+                "team": "FURIA"
+              },
+              {
+                "nick": "FalleN",
+                "kills": 7,
+                "deaths": 14,
+                "kd_ratio": 0.5,
+                "adr": 46.0,
+                "kast": 68.2,
+                "rating": 0.68,
+                "team": "FURIA"
+              },
+              {
+                "nick": "molodoy",
+                "kills": 11,
+                "deaths": 15,
+                "kd_ratio": 0.73,
+                "adr": 55.6,
+                "kast": 59.1,
+                "rating": 0.61,
+                "team": "FURIA"
+              }
+            ],
+            "mvp": {
+              "nick": "Spinx",
+              "kills": 21,
+              "deaths": 13,
+              "kd_ratio": 1.62,
+              "adr": 103.2,
+              "kast": 68.2,
+              "rating": 1.83,
+              "team": "MOUZ"
+            }
+          },
+          {
+            "name": "Cache",
+            "status": "live",
+            "score": {
+              "MOUZ": 4,
+              "FURIA": 8
+            },
+            "half": "( 4 : 8 ; -:- )"
+          }
+        ]
+      },
+      "time": null,
+      "event": "PGL Masters Bucharest 2026",
+      "event_id": "8050",
+      "format": "bo3",
+      "live": true,
+      "stars": 5,
+      "match_id": "2399757",
+      "url": "https://www.hltv.org/matches/2399757/mouz-vs-furia-pgl-masters-bucharest-2026",
+      "teams": [
+        {
+          "name": "MOUZ",
+          "country": null,
+          "is_brazil": false
+        },
+        {
+          "name": "FURIA",
+          "country": "Brazil",
+          "is_brazil": true
+        }
+      ],
+      "score": {
+        "rounds": {
+          "MOUZ": 7,
+          "FURIA": 11
+        },
+        "maps": {
+          "MOUZ": 1,
+          "FURIA": 1
+        }
+      },
+      "stats": [
+        {
+          "team": "MOUZ",
+          "players": [
+            {
+              "nick": "PR",
+              "kills": 32,
+              "deaths": 32,
+              "kd_ratio": 1.0,
+              "adr": 80.9,
+              "kast": 65.9,
+              "rating": 1.16
+            },
+            {
+              "nick": "Spinx",
+              "kills": 28,
+              "deaths": 28,
+              "kd_ratio": 1.0,
+              "adr": 82.7,
+              "kast": 58.5,
+              "rating": 1.11
+            },
+            {
+              "nick": "xertioN",
+              "kills": 24,
+              "deaths": 32,
+              "kd_ratio": 0.75,
+              "adr": 68.8,
+              "kast": 75.6,
+              "rating": 0.99
+            },
+            {
+              "nick": "torzsi",
+              "kills": 25,
+              "deaths": 27,
+              "kd_ratio": 0.93,
+              "adr": 65.6,
+              "kast": 65.9,
+              "rating": 0.93
+            },
+            {
+              "nick": "xelex",
+              "kills": 14,
+              "deaths": 27,
+              "kd_ratio": 0.52,
+              "adr": 52.6,
+              "kast": 65.9,
+              "rating": 0.73
+            }
+          ]
+        },
+        {
+          "team": "FURIA",
+          "players": [
+            {
+              "nick": "KSCERATO",
+              "kills": 35,
+              "deaths": 23,
+              "kd_ratio": 1.52,
+              "adr": 88.0,
+              "kast": 75.6,
+              "rating": 1.35
+            },
+            {
+              "nick": "YEKINDAR",
+              "kills": 32,
+              "deaths": 27,
+              "kd_ratio": 1.19,
+              "adr": 90.7,
+              "kast": 75.6,
+              "rating": 1.3
+            },
+            {
+              "nick": "yuurih",
+              "kills": 28,
+              "deaths": 23,
+              "kd_ratio": 1.22,
+              "adr": 71.6,
+              "kast": 73.2,
+              "rating": 1.11
+            },
+            {
+              "nick": "molodoy",
+              "kills": 35,
+              "deaths": 24,
+              "kd_ratio": 1.46,
+              "adr": 75.7,
+              "kast": 73.2,
+              "rating": 1.1
+            },
+            {
+              "nick": "FalleN",
+              "kills": 16,
+              "deaths": 27,
+              "kd_ratio": 0.59,
+              "adr": 51.5,
+              "kast": 73.2,
+              "rating": 0.76
+            }
+          ]
+        }
+      ],
+      "mvp": {
+        "nick": "KSCERATO",
+        "kills": 35,
+        "deaths": 23,
+        "kd_ratio": 1.52,
+        "adr": 88.0,
+        "kast": 75.6,
+        "rating": 1.35,
+        "team": "FURIA"
+      },
+      "watch": [
+        "https://www.youtube.com/watch?v=XCRwkYCcqjA",
+        "https://www.youtube.com/watch?v=nZ2CevoATVE",
+        "https://www.twitch.tv/pgl",
+        "https://www.twitch.tv/strogo",
+        "https://kick.com/gaules",
+        "https://www.youtube.com/watch?v=ATG-MuLgfpc",
+        "https://www.youtube.com/watch?v=iu2_719Cf7Q",
+        "https://www.youtube.com/watch?v=Wasrlxg0POA",
+        "https://www.twitch.tv/bysl4m",
+        "https://www.twitch.tv/skywhywalker",
+        "https://www.twitch.tv/cs2_paragon_ru",
+        "https://www.youtube.com/watch?v=r7oqagG21KY",
+        "https://www.youtube.com/watch?v=uqEwuL20ypk",
+        "https://www.youtube.com/watch?v=T3YPLDbAOa4",
+        "https://www.twitch.tv/dmitry_lixxx",
+        "https://www.youtube.com/watch?v=yEYFQ0N2AYM",
+        "https://www.twitch.tv/roman",
+        "https://www.youtube.com/watch?v=uLY2ELDuec8",
+        "https://www.twitch.tv/pelaajatcom",
+        "https://www.twitch.tv/krl_stream",
+        "https://www.twitch.tv/CS2_maincast",
+        "https://www.twitch.tv/izakooo",
+        "https://www.twitch.tv/happychucky",
+        "https://www.twitch.tv/watchfulTV",
+        "https://kick.com/pgl",
+        "https://kick.com/michel",
+        "https://www.twitch.tv/madhousetv_",
+        "https://www.twitch.tv/mauisnake",
+        "https://www.twitch.tv/psp1g",
+        "https://www.twitch.tv/x9nium",
+        "https://www.youtube.com/watch?v=Io4dsEfV8Nw",
+        "https://kick.com/bladeito",
+        "https://www.twitch.tv/michel",
+        "https://kick.com/cskyf",
+        "https://kick.com/x9nium",
+        "https://kick.com/zurys1337",
+        "https://www.twitch.tv/esport1TV",
+        "https://www.youtube.com/watch?v=6YX7Zu9k4QM",
+        "https://www.twitch.tv/polex",
+        "https://kick.com/polex",
+        "https://www.twitch.tv/snailkick",
+        "https://www.twitch.tv/heatoncs",
+        "https://www.twitch.tv/redcs",
+        "https://www.twitch.tv/forzorezor",
+        "https://kick.com/jaxi",
+        "https://www.youtube.com/watch?v=6ieumErSi-0",
+        "https://www.twitch.tv/perfecto_of",
+        "https://www.twitch.tv/zonixxcs",
+        "https://kick.com/heaton",
+        "https://www.twitch.tv/esportstudion",
+        "https://www.youtube.com/watch?v=43nrm_9xiYM",
+        "https://www.twitch.tv/Trottah",
+        "https://www.twitch.tv/bt0tv",
+        "https://www.twitch.tv/blackelespanolito",
+        "https://www.youtube.com/watch?v=L7YO_MjR0b8",
+        "https://www.youtube.com/watch?v=Idk4eNShdZI",
+        "https://www.twitch.tv/gr0mjkeee",
+        "https://www.twitch.tv/bopomo_",
+        "https://kick.com/oskartommy",
+        "https://www.twitch.tv/okkocyber",
+        "https://kick.com/bopomo",
+        "https://www.twitch.tv/esportsbulgaria",
+        "https://kick.com/trottah",
+        "https://kick.com/krl_stream",
+        "https://kick.com/barstooltv",
+        "https://www.twitch.tv/mgfongabe",
+        "https://kick.com/pelaajatcom",
+        "https://kick.com/tvarenaesport",
+        "https://kick.com/zonixx",
+        "https://kick.com/esportsbg",
+        "https://www.youtube.com/watch?v=vp_WlVqMkSo",
+        "https://kick.com/esportstudion",
+        "https://www.twitch.tv/ViperDemon",
+        "https://www.twitch.tv/cyberfocus"
+      ]
+    },
+    {
+      "series": {
+        "format": "md3",
+        "current_map": "Mirage",
+        "next_map": "Dust2",
+        "finished_maps": [
+          "Inferno"
+        ],
+        "maps": [
+          {
+            "name": "Inferno",
+            "status": "done",
+            "score": {
+              "Fluxo": 10,
+              "ShindeN": 13
+            },
+            "half": "( 8 : 4 ; 2 : 9 )",
+            "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243230/fluxo-vs-shinden",
+            "players": [
+              {
+                "nick": "exit",
+                "kills": 17,
+                "deaths": 16,
+                "kd_ratio": 1.06,
+                "adr": 89.4,
+                "kast": 69.6,
+                "rating": 1.42,
+                "team": "Fluxo"
+              },
+              {
+                "nick": "zevy",
+                "kills": 14,
+                "deaths": 14,
+                "kd_ratio": 1.0,
+                "adr": 63.3,
+                "kast": 73.9,
+                "rating": 1.08,
+                "team": "Fluxo"
+              },
+              {
+                "nick": "kye",
+                "kills": 14,
+                "deaths": 15,
+                "kd_ratio": 0.93,
+                "adr": 70.3,
+                "kast": 78.3,
+                "rating": 0.96,
+                "team": "Fluxo"
+              },
+              {
+                "nick": "dav1deuS",
+                "kills": 15,
+                "deaths": 16,
+                "kd_ratio": 0.94,
+                "adr": 62.0,
+                "kast": 78.3,
+                "rating": 0.87,
+                "team": "Fluxo"
+              },
+              {
+                "nick": "Ltz",
+                "kills": 8,
+                "deaths": 16,
+                "kd_ratio": 0.5,
+                "adr": 47.2,
+                "kast": 69.6,
+                "rating": 0.6,
+                "team": "Fluxo"
+              },
+              {
+                "nick": "guty",
+                "kills": 20,
+                "deaths": 14,
+                "kd_ratio": 1.43,
+                "adr": 97.9,
+                "kast": 87.0,
+                "rating": 1.5,
+                "team": "ShindeN"
+              },
+              {
+                "nick": "naz",
+                "kills": 14,
+                "deaths": 11,
+                "kd_ratio": 1.27,
+                "adr": 70.1,
+                "kast": 73.9,
+                "rating": 1.28,
+                "team": "ShindeN"
+              },
+              {
+                "nick": "abizz",
+                "kills": 15,
+                "deaths": 16,
+                "kd_ratio": 0.94,
+                "adr": 76.5,
+                "kast": 82.6,
+                "rating": 1.21,
+                "team": "ShindeN"
+              },
+              {
+                "nick": "reNTU",
+                "kills": 19,
+                "deaths": 13,
+                "kd_ratio": 1.46,
+                "adr": 66.7,
+                "kast": 78.3,
+                "rating": 1.0,
+                "team": "ShindeN"
+              },
+              {
+                "nick": "tom1jed",
+                "kills": 9,
+                "deaths": 14,
+                "kd_ratio": 0.64,
+                "adr": 48.9,
+                "kast": 73.9,
+                "rating": 0.75,
+                "team": "ShindeN"
+              }
+            ],
+            "mvp": {
+              "nick": "guty",
+              "kills": 20,
+              "deaths": 14,
+              "kd_ratio": 1.43,
+              "adr": 97.9,
+              "kast": 87.0,
+              "rating": 1.5,
+              "team": "ShindeN"
+            }
+          },
+          {
+            "name": "Mirage",
+            "status": "live",
+            "score": {
+              "Fluxo": 13,
+              "ShindeN": 7
+            },
+            "half": "( 6 : 6 ; 7 : 1 )"
+          },
+          {
+            "name": "Dust2",
+            "status": "upcoming"
+          }
+        ]
+      },
+      "time": null,
+      "event": "FiRe Last Chance 2026",
+      "event_id": "9421",
+      "format": "bo3",
+      "live": true,
+      "stars": 0,
+      "match_id": "2399972",
+      "url": "https://www.hltv.org/matches/2399972/fluxo-vs-shinden-fire-last-chance-2026",
+      "teams": [
+        {
+          "name": "Fluxo",
+          "country": "Brazil",
+          "is_brazil": true
+        },
+        {
+          "name": "ShindeN",
+          "country": null,
+          "is_brazil": false
+        }
+      ],
+      "score": {
+        "rounds": {
+          "Fluxo": 13,
+          "ShindeN": 7
+        },
+        "maps": {
+          "Fluxo": 1,
+          "ShindeN": 1
+        }
+      },
+      "stats": [
+        {
+          "team": "Fluxo",
+          "players": [
+            {
+              "nick": "exit",
+              "kills": 17,
+              "deaths": 16,
+              "kd_ratio": 1.06,
+              "adr": 89.4,
+              "kast": 69.6,
+              "rating": 1.42
+            },
+            {
+              "nick": "zevy",
+              "kills": 14,
+              "deaths": 14,
+              "kd_ratio": 1.0,
+              "adr": 63.3,
+              "kast": 73.9,
+              "rating": 1.08
+            },
+            {
+              "nick": "kye",
+              "kills": 14,
+              "deaths": 15,
+              "kd_ratio": 0.93,
+              "adr": 70.3,
+              "kast": 78.3,
+              "rating": 0.96
+            },
+            {
+              "nick": "dav1deuS",
+              "kills": 15,
+              "deaths": 16,
+              "kd_ratio": 0.94,
+              "adr": 62.0,
+              "kast": 78.3,
+              "rating": 0.87
+            },
+            {
+              "nick": "Ltz",
+              "kills": 8,
+              "deaths": 16,
+              "kd_ratio": 0.5,
+              "adr": 47.2,
+              "kast": 69.6,
+              "rating": 0.6
+            }
+          ]
+        },
+        {
+          "team": "ShindeN",
+          "players": [
+            {
+              "nick": "guty",
+              "kills": 20,
+              "deaths": 14,
+              "kd_ratio": 1.43,
+              "adr": 97.9,
+              "kast": 87.0,
+              "rating": 1.5
+            },
+            {
+              "nick": "naz",
+              "kills": 14,
+              "deaths": 11,
+              "kd_ratio": 1.27,
+              "adr": 70.1,
+              "kast": 73.9,
+              "rating": 1.28
+            },
+            {
+              "nick": "abizz",
+              "kills": 15,
+              "deaths": 16,
+              "kd_ratio": 0.94,
+              "adr": 76.5,
+              "kast": 82.6,
+              "rating": 1.21
+            },
+            {
+              "nick": "reNTU",
+              "kills": 19,
+              "deaths": 13,
+              "kd_ratio": 1.46,
+              "adr": 66.7,
+              "kast": 78.3,
+              "rating": 1.0
+            },
+            {
+              "nick": "tom1jed",
+              "kills": 9,
+              "deaths": 14,
+              "kd_ratio": 0.64,
+              "adr": 48.9,
+              "kast": 73.9,
+              "rating": 0.75
+            }
+          ]
+        }
+      ],
+      "mvp": {
+        "nick": "guty",
+        "kills": 20,
+        "deaths": 14,
+        "kd_ratio": 1.43,
+        "adr": 97.9,
+        "kast": 87.0,
+        "rating": 1.5,
+        "team": "ShindeN"
+      },
+      "watch": [
+        "https://kick.com/forg1",
+        "https://kick.com/elmorocho7",
+        "https://www.twitch.tv/neret17",
+        "https://www.twitch.tv/tris_mara",
+        "https://kick.com/kronyii",
+        "https://www.youtube.com/watch?v=UnCQ7b0NtMI",
+        "https://kick.com/locomas",
+        "https://kick.com/tris_mara",
+        "https://www.twitch.tv/tr3jou",
+        "https://www.twitch.tv/kronyii",
+        "https://kick.com/tr3jou"
+      ]
+    },
+    {
+      "series": {
+        "format": "md3",
+        "current_map": "Dust2",
+        "next_map": "Nuke",
+        "finished_maps": [
+          "Anubis"
+        ],
+        "maps": [
+          {
+            "name": "Anubis",
+            "status": "done",
+            "score": {
+              "Low Cortisol BR": 13,
+              "ALKA": 7
+            },
+            "half": "( 9 : 3 ; 4 : 4 )",
+            "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243239/low-cortisol-br-vs-alka",
+            "players": [
+              {
+                "nick": "zede",
+                "kills": 17,
+                "deaths": 11,
+                "kd_ratio": 1.55,
+                "adr": 82.2,
+                "kast": 80.0,
+                "rating": 1.93,
+                "team": "Low Cortisol BR"
+              },
+              {
+                "nick": "levi",
+                "kills": 20,
+                "deaths": 10,
+                "kd_ratio": 2.0,
+                "adr": 87.8,
+                "kast": 75.0,
+                "rating": 1.59,
+                "team": "Low Cortisol BR"
+              },
+              {
+                "nick": "fokiu",
+                "kills": 22,
+                "deaths": 13,
+                "kd_ratio": 1.69,
+                "adr": 110.5,
+                "kast": 70.0,
+                "rating": 1.41,
+                "team": "Low Cortisol BR"
+              },
+              {
+                "nick": "t9rnay",
+                "kills": 12,
+                "deaths": 11,
+                "kd_ratio": 1.09,
+                "adr": 60.1,
+                "kast": 70.0,
+                "rating": 0.91,
+                "team": "Low Cortisol BR"
+              },
+              {
+                "nick": "stormzyn",
+                "kills": 9,
+                "deaths": 15,
+                "kd_ratio": 0.6,
+                "adr": 70.3,
+                "kast": 60.0,
+                "rating": 0.66,
+                "team": "Low Cortisol BR"
+              },
+              {
+                "nick": "vinaabEAST",
+                "kills": 20,
+                "deaths": 15,
+                "kd_ratio": 1.33,
+                "adr": 122.5,
+                "kast": 90.0,
+                "rating": 1.59,
+                "team": "ALKA"
+              },
+              {
+                "nick": "puni",
+                "kills": 9,
+                "deaths": 14,
+                "kd_ratio": 0.64,
+                "adr": 58.0,
+                "kast": 65.0,
+                "rating": 0.87,
+                "team": "ALKA"
+              },
+              {
+                "nick": "proSHOW",
+                "kills": 12,
+                "deaths": 17,
+                "kd_ratio": 0.71,
+                "adr": 61.0,
+                "kast": 50.0,
+                "rating": 0.74,
+                "team": "ALKA"
+              },
+              {
+                "nick": "bnc",
+                "kills": 10,
+                "deaths": 17,
+                "kd_ratio": 0.59,
+                "adr": 51.0,
+                "kast": 55.0,
+                "rating": 0.69,
+                "team": "ALKA"
+              },
+              {
+                "nick": "cerolzin",
+                "kills": 9,
+                "deaths": 17,
+                "kd_ratio": 0.53,
+                "adr": 51.5,
+                "kast": 60.0,
+                "rating": 0.59,
+                "team": "ALKA"
+              }
+            ],
+            "mvp": {
+              "nick": "zede",
+              "kills": 17,
+              "deaths": 11,
+              "kd_ratio": 1.55,
+              "adr": 82.2,
+              "kast": 80.0,
+              "rating": 1.93,
+              "team": "Low Cortisol BR"
+            }
+          },
+          {
+            "name": "Dust2",
+            "status": "live",
+            "score": {
+              "Low Cortisol BR": 10,
+              "ALKA": 2
+            },
+            "half": "( 10 : 2 ; -:- )"
+          },
+          {
+            "name": "Nuke",
+            "status": "upcoming"
+          }
+        ]
+      },
+      "time": null,
+      "event": "Gamers Club Masters VII",
+      "event_id": "9292",
+      "format": "bo3",
+      "live": true,
+      "stars": 0,
+      "match_id": "2399953",
+      "url": "https://www.hltv.org/matches/2399953/low-cortisol-br-vs-alka-gamers-club-masters-vii",
+      "teams": [
+        {
+          "name": "Low Cortisol BR",
+          "country": "Brazil",
+          "is_brazil": true
+        },
+        {
+          "name": "ALKA",
+          "country": null,
+          "is_brazil": false
+        }
+      ],
+      "score": {
+        "rounds": {
+          "Low Cortisol BR": 10,
+          "ALKA": 2
+        },
+        "maps": {
+          "Low Cortisol BR": 1,
+          "ALKA": 0
+        }
+      },
+      "stats": [
+        {
+          "team": "Low Cortisol BR",
+          "players": [
+            {
+              "nick": "zede",
+              "kills": 17,
+              "deaths": 11,
+              "kd_ratio": 1.55,
+              "adr": 82.2,
+              "kast": 80.0,
+              "rating": 1.93
+            },
+            {
+              "nick": "levi",
+              "kills": 20,
+              "deaths": 10,
+              "kd_ratio": 2.0,
+              "adr": 87.8,
+              "kast": 75.0,
+              "rating": 1.59
+            },
+            {
+              "nick": "fokiu",
+              "kills": 22,
+              "deaths": 13,
+              "kd_ratio": 1.69,
+              "adr": 110.5,
+              "kast": 70.0,
+              "rating": 1.41
+            },
+            {
+              "nick": "t9rnay",
+              "kills": 12,
+              "deaths": 11,
+              "kd_ratio": 1.09,
+              "adr": 60.1,
+              "kast": 70.0,
+              "rating": 0.91
+            },
+            {
+              "nick": "stormzyn",
+              "kills": 9,
+              "deaths": 15,
+              "kd_ratio": 0.6,
+              "adr": 70.3,
+              "kast": 60.0,
+              "rating": 0.66
+            }
+          ]
+        },
+        {
+          "team": "ALKA",
+          "players": [
+            {
+              "nick": "vinaabEAST",
+              "kills": 20,
+              "deaths": 15,
+              "kd_ratio": 1.33,
+              "adr": 122.5,
+              "kast": 90.0,
+              "rating": 1.59
+            },
+            {
+              "nick": "puni",
+              "kills": 9,
+              "deaths": 14,
+              "kd_ratio": 0.64,
+              "adr": 58.0,
+              "kast": 65.0,
+              "rating": 0.87
+            },
+            {
+              "nick": "proSHOW",
+              "kills": 12,
+              "deaths": 17,
+              "kd_ratio": 0.71,
+              "adr": 61.0,
+              "kast": 50.0,
+              "rating": 0.74
+            },
+            {
+              "nick": "bnc",
+              "kills": 10,
+              "deaths": 17,
+              "kd_ratio": 0.59,
+              "adr": 51.0,
+              "kast": 55.0,
+              "rating": 0.69
+            },
+            {
+              "nick": "cerolzin",
+              "kills": 9,
+              "deaths": 17,
+              "kd_ratio": 0.53,
+              "adr": 51.5,
+              "kast": 60.0,
+              "rating": 0.59
+            }
+          ]
+        }
+      ],
+      "mvp": {
+        "nick": "zede",
+        "kills": 17,
+        "deaths": 11,
+        "kd_ratio": 1.55,
+        "adr": 82.2,
+        "kast": 80.0,
+        "rating": 1.93,
+        "team": "Low Cortisol BR"
+      },
+      "watch": [
+        "https://kick.com/gamersclubcs",
+        "https://www.twitch.tv/gamersclubcs",
+        "https://kick.com/diogodfps",
+        "https://www.youtube.com/watch?v=yE-CXWWvJHM",
+        "https://www.twitch.tv/IVDMALUCO",
+        "https://kick.com/ivdmaluco",
+        "https://www.twitch.tv/diogodfps",
+        "https://www.youtube.com/watch?v=SYPhmy42B9w"
+      ]
+    }
+  ],
   "days": [
     {
       "date": "2026-10-30",
       "weekday": "sexta",
       "matches": [
         {
-          "time": "10:00",
-          "event": "Stake Ranked Episode 5",
-          "event_id": "9257",
-          "format": "bo3",
-          "live": false,
-          "stars": 1,
-          "match_id": "2399717",
-          "url": "https://www.hltv.org/matches/2399717/mibr-vs-eternal-fire-stake-ranked-episode-5",
-          "teams": [
-            {
-              "name": "MIBR",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "Eternal Fire",
-              "country": null,
-              "is_brazil": false
-            }
-          ],
-          "event_info": {
-            "name": "Stake Ranked Episode 5",
-            "url": "https://www.hltv.org/events/9257/stake-ranked-episode-5",
-            "start": "2026-10-27",
-            "end": "2026-10-30",
-            "lan": true
-          }
-        },
-        {
-          "time": "10:00",
-          "event": "Gamers Club Masters VII",
-          "event_id": "9292",
-          "format": "bo3",
-          "live": false,
-          "stars": 0,
-          "match_id": "2399952",
-          "url": "https://www.hltv.org/matches/2399952/quintessncia-vs-naocopulas-gamers-club-masters-vii",
-          "teams": [
-            {
-              "name": "QUINTESSÊNCIA",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "NAOCOPULAS",
-              "country": "Brazil",
-              "is_brazil": true
-            }
-          ],
-          "event_info": {
-            "name": "Gamers Club Masters VII",
-            "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
-            "start": "2026-10-29",
-            "end": "2026-11-01",
-            "lan": true
-          }
-        },
-        {
-          "time": "10:00",
-          "event": "FiRe Last Chance 2026",
-          "event_id": "9421",
-          "format": "bo3",
-          "live": false,
-          "stars": 0,
-          "match_id": "2399970",
-          "url": "https://www.hltv.org/matches/2399970/fluxo-vs-signatus-fire-last-chance-2026",
-          "teams": [
-            {
-              "name": "Fluxo",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "Signatus",
-              "country": null,
-              "is_brazil": false
-            }
-          ],
-          "event_info": {
-            "name": "FiRe Last Chance 2026",
-            "url": "https://www.hltv.org/events/9421/fire-last-chance-2026",
-            "start": "2026-10-29",
-            "end": "2026-11-01",
-            "lan": true
-          }
-        },
-        {
-          "time": "12:00",
-          "event": "PGL Masters Bucharest 2026",
-          "event_id": "8050",
-          "format": "bo3",
-          "live": false,
-          "stars": 5,
-          "match_id": "2399757",
-          "url": "https://www.hltv.org/matches/2399757/mouz-vs-furia-pgl-masters-bucharest-2026",
-          "teams": [
-            {
-              "name": "MOUZ",
-              "country": null,
-              "is_brazil": false
-            },
-            {
-              "name": "FURIA",
-              "country": "Brazil",
-              "is_brazil": true
-            }
-          ],
-          "stats": [
-            {
-              "team": "MOUZ",
-              "players": [
-                {
-                  "nick": "xertioN",
-                  "kills": 14,
-                  "deaths": 14,
-                  "kd_ratio": 1.0,
-                  "adr": 73.4,
-                  "kast": 68.4,
-                  "rating": 1.13
-                },
-                {
-                  "nick": "PR",
-                  "kills": 12,
-                  "deaths": 17,
-                  "kd_ratio": 0.71,
-                  "adr": 80.3,
-                  "kast": 52.6,
-                  "rating": 1.0
-                },
-                {
-                  "nick": "torzsi",
-                  "kills": 11,
-                  "deaths": 15,
-                  "kd_ratio": 0.73,
-                  "adr": 66.8,
-                  "kast": 73.7,
-                  "rating": 0.78
-                },
-                {
-                  "nick": "xelex",
-                  "kills": 6,
-                  "deaths": 13,
-                  "kd_ratio": 0.46,
-                  "adr": 44.8,
-                  "kast": 63.2,
-                  "rating": 0.6
-                },
-                {
-                  "nick": "Spinx",
-                  "kills": 7,
-                  "deaths": 15,
-                  "kd_ratio": 0.47,
-                  "adr": 58.9,
-                  "kast": 47.4,
-                  "rating": 0.51
-                }
-              ]
-            },
-            {
-              "team": "FURIA",
-              "players": [
-                {
-                  "nick": "molodoy",
-                  "kills": 24,
-                  "deaths": 9,
-                  "kd_ratio": 2.67,
-                  "adr": 98.9,
-                  "kast": 89.5,
-                  "rating": 1.86
-                },
-                {
-                  "nick": "YEKINDAR",
-                  "kills": 16,
-                  "deaths": 12,
-                  "kd_ratio": 1.33,
-                  "adr": 106.5,
-                  "kast": 84.2,
-                  "rating": 1.51
-                },
-                {
-                  "nick": "yuurih",
-                  "kills": 14,
-                  "deaths": 8,
-                  "kd_ratio": 1.75,
-                  "adr": 68.8,
-                  "kast": 84.2,
-                  "rating": 1.42
-                },
-                {
-                  "nick": "KSCERATO",
-                  "kills": 11,
-                  "deaths": 8,
-                  "kd_ratio": 1.38,
-                  "adr": 62.5,
-                  "kast": 73.7,
-                  "rating": 1.31
-                },
-                {
-                  "nick": "FalleN",
-                  "kills": 9,
-                  "deaths": 13,
-                  "kd_ratio": 0.69,
-                  "adr": 58.0,
-                  "kast": 78.9,
-                  "rating": 0.85
-                }
-              ]
-            }
-          ],
-          "watch": [
-            "https://www.youtube.com/watch?v=XCRwkYCcqjA",
-            "https://www.youtube.com/watch?v=nZ2CevoATVE",
-            "https://www.twitch.tv/strogo",
-            "https://www.twitch.tv/pgl",
-            "https://kick.com/gaules",
-            "https://www.youtube.com/watch?v=ATG-MuLgfpc",
-            "https://www.youtube.com/watch?v=iu2_719Cf7Q",
-            "https://www.youtube.com/watch?v=Wasrlxg0POA",
-            "https://www.twitch.tv/bysl4m",
-            "https://www.twitch.tv/skywhywalker",
-            "https://www.twitch.tv/cs2_paragon_ru",
-            "https://www.youtube.com/watch?v=r7oqagG21KY",
-            "https://www.youtube.com/watch?v=uqEwuL20ypk",
-            "https://www.twitch.tv/dmitry_lixxx",
-            "https://www.youtube.com/watch?v=T3YPLDbAOa4",
-            "https://www.twitch.tv/pelaajatcom",
-            "https://www.youtube.com/watch?v=uLY2ELDuec8",
-            "https://www.youtube.com/watch?v=yEYFQ0N2AYM",
-            "https://www.twitch.tv/roman",
-            "https://www.twitch.tv/happychucky",
-            "https://www.twitch.tv/CS2_maincast",
-            "https://www.twitch.tv/izakooo",
-            "https://www.twitch.tv/krl_stream",
-            "https://www.twitch.tv/watchfulTV",
-            "https://kick.com/michel",
-            "https://kick.com/pgl",
-            "https://www.twitch.tv/psp1g",
-            "https://www.twitch.tv/mauisnake",
-            "https://www.twitch.tv/redcs",
-            "https://www.twitch.tv/madhousetv_",
-            "https://www.twitch.tv/x9nium",
-            "https://kick.com/bladeito",
-            "https://www.youtube.com/watch?v=Io4dsEfV8Nw",
-            "https://www.twitch.tv/michel",
-            "https://www.twitch.tv/snailkick",
-            "https://kick.com/cskyf",
-            "https://kick.com/x9nium",
-            "https://kick.com/polex",
-            "https://www.twitch.tv/esport1TV",
-            "https://www.twitch.tv/heatoncs",
-            "https://www.twitch.tv/forzorezor",
-            "https://www.twitch.tv/polex",
-            "https://www.youtube.com/watch?v=6YX7Zu9k4QM",
-            "https://www.twitch.tv/perfecto_of",
-            "https://kick.com/zurys1337",
-            "https://www.twitch.tv/zonixxcs",
-            "https://kick.com/jaxi",
-            "https://www.youtube.com/watch?v=6ieumErSi-0",
-            "https://kick.com/heaton",
-            "https://www.twitch.tv/Trottah",
-            "https://www.twitch.tv/esportstudion",
-            "https://www.twitch.tv/blackelespanolito",
-            "https://www.twitch.tv/gr0mjkeee",
-            "https://kick.com/oskartommy",
-            "https://www.twitch.tv/bt0tv",
-            "https://www.youtube.com/watch?v=43nrm_9xiYM",
-            "https://www.youtube.com/watch?v=Idk4eNShdZI",
-            "https://www.twitch.tv/okkocyber",
-            "https://www.youtube.com/watch?v=L7YO_MjR0b8",
-            "https://www.twitch.tv/bopomo_",
-            "https://www.twitch.tv/esportsbulgaria",
-            "https://kick.com/bopomo",
-            "https://www.twitch.tv/mgfongabe",
-            "https://kick.com/pelaajatcom",
-            "https://kick.com/barstooltv",
-            "https://kick.com/trottah",
-            "https://kick.com/zonixx",
-            "https://kick.com/tvarenaesport",
-            "https://kick.com/esportsbg",
-            "https://kick.com/krl_stream",
-            "https://www.youtube.com/watch?v=vp_WlVqMkSo",
-            "https://www.twitch.tv/ViperDemon",
-            "https://kick.com/esportstudion",
-            "https://www.twitch.tv/cyberfocus"
-          ],
-          "event_info": {
-            "name": "PGL Masters Bucharest 2026",
-            "url": "https://www.hltv.org/events/8050/pgl-masters-bucharest-2026",
-            "start": "2026-10-24",
-            "end": "2026-10-31",
-            "lan": true
-          }
-        },
-        {
-          "time": "13:30",
-          "event": "Gamers Club Masters VII",
-          "event_id": "9292",
-          "format": "bo3",
-          "live": false,
-          "stars": 0,
-          "match_id": "2399953",
-          "url": "https://www.hltv.org/matches/2399953/low-cortisol-br-vs-alka-gamers-club-masters-vii",
-          "teams": [
-            {
-              "name": "Low Cortisol BR",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "ALKA",
-              "country": "Brazil",
-              "is_brazil": true
-            }
-          ],
-          "event_info": {
-            "name": "Gamers Club Masters VII",
-            "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
-            "start": "2026-10-29",
-            "end": "2026-11-01",
-            "lan": true
-          }
-        },
-        {
+          "series": {
+            "format": "md3",
+            "current_map": null,
+            "next_map": "TBA",
+            "finished_maps": [],
+            "maps": [
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              }
+            ]
+          },
           "time": "17:00",
           "event": "Gamers Club Masters VII",
           "event_id": "9292",
@@ -353,34 +1136,26 @@
               "is_brazil": true
             }
           ],
-          "event_info": {
-            "name": "Gamers Club Masters VII",
-            "url": "https://www.hltv.org/events/9292/gamers-club-masters-vii",
-            "start": "2026-10-29",
-            "end": "2026-11-01",
-            "lan": true
-          }
-        },
-        {
-          "time": "20:30",
-          "event": "Gamers Club Masters VII",
-          "event_id": "9292",
-          "format": "bo3",
-          "live": false,
-          "stars": 0,
-          "match_id": "2399955",
-          "url": "https://www.hltv.org/matches/2399955/dendele-vs-turma-do-pagode-gamers-club-masters-vii",
-          "teams": [
-            {
-              "name": "DENDELE",
-              "country": "Brazil",
-              "is_brazil": true
-            },
-            {
-              "name": "Turma do Pagode",
-              "country": "Brazil",
-              "is_brazil": true
-            }
+          "watch": [
+            "https://www.twitch.tv/vanfantv",
+            "https://kick.com/gamersclubcs",
+            "https://www.twitch.tv/gamersclubcs",
+            "https://kick.com/diogodfps",
+            "https://www.youtube.com/watch?v=yE-CXWWvJHM",
+            "https://www.twitch.tv/IVDMALUCO",
+            "https://kick.com/ivdmaluco",
+            "https://www.twitch.tv/cmarty",
+            "https://www.twitch.tv/watchfulTVb",
+            "https://www.twitch.tv/karmaflexxx",
+            "https://www.twitch.tv/vilacattv",
+            "https://www.twitch.tv/dayneez",
+            "https://www.youtube.com/watch?v=gBG8CEriZA4",
+            "https://www.twitch.tv/nightkkid",
+            "https://www.twitch.tv/diogodfps",
+            "https://kick.com/vilacattv",
+            "https://www.twitch.tv/mrdekastream",
+            "https://kick.com/mrdeka",
+            "https://www.youtube.com/watch?v=SYPhmy42B9w"
           ],
           "event_info": {
             "name": "Gamers Club Masters VII",
@@ -397,6 +1172,26 @@
       "weekday": "segunda",
       "matches": [
         {
+          "series": {
+            "format": "md3",
+            "current_map": null,
+            "next_map": "TBA",
+            "finished_maps": [],
+            "maps": [
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              }
+            ]
+          },
           "time": "04:00",
           "event": "IEM Beijing 2026",
           "event_id": "8245",
@@ -416,6 +1211,9 @@
               "country": null,
               "is_brazil": false
             }
+          ],
+          "watch": [
+            "https://www.twitch.tv/mauisnake"
           ],
           "event_info": {
             "name": "IEM Beijing 2026",
@@ -473,6 +1271,26 @@
       "weekday": "terça",
       "matches": [
         {
+          "series": {
+            "format": "md3",
+            "current_map": null,
+            "next_map": "TBA",
+            "finished_maps": [],
+            "maps": [
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              },
+              {
+                "name": "TBA",
+                "status": "upcoming"
+              }
+            ]
+          },
           "time": "23:00",
           "event": "BLAST Rivals 2026 Season 2",
           "event_id": "8251",
@@ -493,6 +1311,14 @@
               "is_brazil": true
             }
           ],
+          "watch": [
+            "https://www.youtube.com/watch?v=XCRwkYCcqjA",
+            "https://kick.com/gaules",
+            "https://www.twitch.tv/blastpremier",
+            "https://www.youtube.com/watch?v=6Thw4ZbMPdI",
+            "https://www.twitch.tv/benccce",
+            "https://kick.com/blastpremier"
+          ],
           "event_info": {
             "name": "BLAST Rivals 2026 Season 2",
             "url": "https://www.hltv.org/events/8251/blast-rivals-2026-season-2",
@@ -509,5 +1335,6 @@
         }
       ]
     }
-  ]
+  ],
+  "http_calls": 9
 }
