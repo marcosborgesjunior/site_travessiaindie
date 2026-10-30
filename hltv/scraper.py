@@ -177,12 +177,47 @@ def is_brazil_flag(img) -> bool:
     return src.endswith(("BR.gif", "BR.png")) or title == "Brazil"
 
 
+# Fallback quando o wrapper não renderiza a bandeira (comum em matches de
+# datas mais distantes): nomes de times brasileiros do cenário principal.
+BR_TEAM_NAMES = {
+    "furia",
+    "mibr",
+    "imperial",
+    "pain",
+    "legacy",
+    "fluxo",
+    "red canids",
+    "godsent",
+    "sharks",
+    "intz",
+    "w7m",
+    "case",
+    "havan libre",
+    "kabum",
+    "los héroes",
+    "br crowd",
+    "bestia",  # sede BR no cenário LATAM/BR (flag BR no markup do HLTV)
+}
+
+
+def is_brazil_team_name(name: str | None) -> bool:
+    if not name:
+        return False
+    n = name.strip().casefold()
+    return n in BR_TEAM_NAMES or n.endswith(" br")
+
+
 def parse_team(wrapper_team) -> dict:
     name_el = wrapper_team.select_one(".match-teamname")
     name = name_el.get_text(strip=True) if name_el else "(TBD)"
     flag = wrapper_team.select_one("img.country-flag-small, img.flag")
     country = (flag.get("title") or flag.get("alt")) if flag else None
-    return {"name": name, "country": country, "is_brazil": is_brazil_flag(flag)}
+    brazil = is_brazil_flag(flag)
+    if not brazil and is_brazil_team_name(name):
+        # wrapper sem tag de bandeira: reconhece pelo nome do time
+        brazil = True
+        country = country or "Brazil"
+    return {"name": name, "country": country, "is_brazil": brazil}
 
 
 def parse_match(wrapper, section_date: str | None) -> dict:
