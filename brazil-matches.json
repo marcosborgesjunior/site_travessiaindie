@@ -1,0 +1,182 @@
+{
+  "source": "https://www.hltv.org/matches",
+  "scraped_at": "2026-10-30T13:38:34+00:00",
+  "timezone": "America/Sao_Paulo",
+  "total_matches": 8,
+  "days": [
+    {
+      "date": "2026-10-30",
+      "weekday": "sexta",
+      "matches": [
+        {
+          "time": "10:00",
+          "event": "Stake Ranked Episode 5",
+          "format": "bo3",
+          "live": false,
+          "stars": 1,
+          "match_id": "2399717",
+          "url": "https://www.hltv.org/matches/2399717/mibr-vs-eternal-fire-stake-ranked-episode-5",
+          "teams": [
+            {
+              "name": "MIBR",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Eternal Fire",
+              "country": null,
+              "is_brazil": false
+            }
+          ]
+        },
+        {
+          "time": "10:00",
+          "event": "Gamers Club Masters VII",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399952",
+          "url": "https://www.hltv.org/matches/2399952/quintessncia-vs-naocopulas-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "QUINTESSÊNCIA",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "NAOCOPULAS",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ]
+        },
+        {
+          "time": "10:00",
+          "event": "FiRe Last Chance 2026",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399970",
+          "url": "https://www.hltv.org/matches/2399970/fluxo-vs-signatus-fire-last-chance-2026",
+          "teams": [
+            {
+              "name": "Fluxo",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Signatus",
+              "country": null,
+              "is_brazil": false
+            }
+          ]
+        },
+        {
+          "time": "12:00",
+          "event": "PGL Masters Bucharest 2026",
+          "format": "bo3",
+          "live": false,
+          "stars": 5,
+          "match_id": "2399757",
+          "url": "https://www.hltv.org/matches/2399757/mouz-vs-furia-pgl-masters-bucharest-2026",
+          "teams": [
+            {
+              "name": "MOUZ",
+              "country": null,
+              "is_brazil": false
+            },
+            {
+              "name": "FURIA",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ]
+        },
+        {
+          "time": "13:30",
+          "event": "Gamers Club Masters VII",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399953",
+          "url": "https://www.hltv.org/matches/2399953/low-cortisol-br-vs-alka-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "Low Cortisol BR",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "ALKA",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ]
+        },
+        {
+          "time": "16:30",
+          "event": "FiRe Last Chance 2026",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399975",
+          "url": "https://www.hltv.org/matches/2399975/bestia-vs-bth-fire-last-chance-2026",
+          "teams": [
+            {
+              "name": "BESTIA",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "BTH",
+              "country": null,
+              "is_brazil": false
+            }
+          ]
+        },
+        {
+          "time": "17:00",
+          "event": "Gamers Club Masters VII",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399954",
+          "url": "https://www.hltv.org/matches/2399954/imperial-vs-pain-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "Imperial",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "paiN",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ]
+        },
+        {
+          "time": "20:30",
+          "event": "Gamers Club Masters VII",
+          "format": "bo3",
+          "live": false,
+          "stars": 0,
+          "match_id": "2399955",
+          "url": "https://www.hltv.org/matches/2399955/dendele-vs-turma-do-pagode-gamers-club-masters-vii",
+          "teams": [
+            {
+              "name": "DENDELE",
+              "country": "Brazil",
+              "is_brazil": true
+            },
+            {
+              "name": "Turma do Pagode",
+              "country": "Brazil",
+              "is_brazil": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
