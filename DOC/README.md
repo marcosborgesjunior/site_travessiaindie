@@ -85,9 +85,20 @@ Um match entra no JSON se **qualquer** um dos dois times for BR.
     "next_map": "Cache",     // próximo mapa    (null se não há)
     "finished_maps": ["Dust2"],
     "maps": [
-      { "name": "Dust2",  "status": "done",     "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )" },
-      { "name": "Mirage", "status": "live",     "score": {"MOUZ":4,"FURIA":8},  "half": "( 4 : 8 ; -:- )" },
-      { "name": "Cache",  "status": "upcoming" }   // sem score/half
+      {
+        "name": "Dust2", "status": "done",
+        "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )",
+        "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243227/...",
+        // só em mapas FINALIZADOS (bloco embutido na página, zero requests):
+        "players": [                     // lista PLANA —10 jogadores
+          { "nick":"molodoy", "team":"FURIA", "kills":24, "deaths":9,
+            "kd_ratio":2.67, "adr":98.9, "kast":89.5, "rating":1.86 },
+          ...
+        ],
+        "mvp": { "nick":"molodoy", "team":"FURIA", "rating":1.86, ... }  // maior rating DO MAPA
+      },
+      { "name": "Mirage", "status": "live", "score": {"MOUZ":4,"FURIA":8}, "half": "( 4 : 8 ; -:- )" },
+      { "name": "Cache",  "status": "upcoming" }
     ]
   },
 
@@ -268,9 +279,10 @@ python hltv/scraper.py --max-calls 10 --interval 60   # mais conservador
    fonte HTML** para links de melhores momentos.
 2. **Tempo real** — o scorebot do HLTV usa websocket; nosso score é um
    snapshot do momento da execução (atualiza a cada run do cron).
-3. **Stats por mapa individual** — as tabelas do HTML são agregadas por
-   time (Both/T/CT); K-D por mapa exige a página `/stats/matches/mapstatsid/...`
-   (não integrada — custo extra de chamadas).
+3. **Stats por mapa** — os stats de jogador **por mapa finalizado** vêm do
+   bloco embutido `div#<mapstatsid>-content` na página do match (zero requests).
+   O mapa **ao vivo ainda não tem** esse bloco — aparece quando o mapa termina.
+   A página dedicada `/stats/matches/mapstatsid/...` tem WAF próprio (403).
 4. **Jogo ao vivo sem horário** — entra só em `live[]`; não recebe `time`
    porque o markup não expõe o início.
 5. **Cache do CDN** — o JSON publicado pode estar até10 min atrás do

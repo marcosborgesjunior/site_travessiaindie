@@ -178,8 +178,19 @@
     "next_map": "Cache",            // próximo mapa    (null se não há)
     "finished_maps": ["Dust2"],
     "maps": [
-      { "name": "Dust2",  "status": "done",     "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )" },
-      { "name": "Mirage", "status": "live",     "score": {"MOUZ":4,"FURIA":8},  "half": "( 4 : 8 ; -:- )" },
+      {
+        "name": "Dust2", "status": "done",
+        "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )",
+        "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243227/...",
+        // só em mapas FINALIZADOS (bloco embutido na página, zero requests):
+        "players": [                     // lista PLANA — 10 jogadores
+          { "nick":"molodoy", "team":"FURIA", "kills":24, "deaths":9,
+            "kd_ratio":2.67, "adr":98.9, "kast":89.5, "rating":1.86 },
+          ...
+        ],
+        "mvp": { "nick":"molodoy", "team":"FURIA", "rating":1.86 }  // maior rating DO MAPA
+      },
+      { "name": "Mirage", "status": "live", "score": {"MOUZ":4,"FURIA":8}, "half": "( 4 : 8 ; -:- )" },
       { "name": "Cache",  "status": "upcoming" }
     ]
   },
@@ -349,9 +360,11 @@ python hltv/scraper.py --max-calls 10 --interval 60   # mais conservador</code><
     <b>Não há fonte HTML</b> para melhores momentos.</li>
   <li><b>Tempo real</b> — o scorebot usa websocket; nosso score é snapshot do
     momento da execução (atualiza a cada run do cron).</li>
-  <li><b>Stats por mapa individual</b> — as tabelas são agregadas por time
-    (Both/T/CT); K-D por mapa exigiria <code>/stats/matches/mapstatsid/...</code>
-    (não integrada — custo extra de chamadas).</li>
+  <li><b>Stats por mapa</b> — os stats de jogador <b>por mapa finalizado</b> vêm do
+    bloco embutido <code>div#&lt;mapstatsid&gt;-content</code> na página do match
+    (zero requests). O mapa <b>ao vivo ainda não tem</b> esse bloco — aparece quando
+    o mapa termina. A página dedicada <code>/stats/matches/mapstatsid/...</code>
+    tem WAF próprio (403).</li>
   <li><b>Jogo ao vivo sem horário</b> — entra só em <code>live[]</code>, sem <code>time</code>
     (o markup não expõe o início).</li>
   <li><b>Cache do CDN</b> — o JSON pode estar até 10 min atrás do

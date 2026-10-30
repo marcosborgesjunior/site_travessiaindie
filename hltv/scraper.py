@@ -249,16 +249,11 @@ def is_brazil_team_name(name: str | None) -> bool:
     return n in BR_TEAM_NAMES or n.endswith(" br")
 
 
-def parse_match_stats(html: str) -> list[dict]:
-    """Stats por jogador da página de um match (div.matchstats).
-
-    Tabelas vêm por time × lado (Both/T/CT); a primeira de cada time é a
-    agregada. Colunas: nome, K-D, eK-eD, Swing, ADR, eADR, KAST, eKAST, Rating.
-    """
-    soup = BeautifulSoup(html, "html.parser")
+def parse_stats_root(root) -> list[dict]:
+    """Stats por jogador de um subtree BeautifulSoup (tabelas com td.adr)."""
     out: list[dict] = []
     seen_teams: set[str] = set()
-    for table in soup.select("table"):
+    for table in root.select("table"):
         if not table.select_one("td.adr"):
             continue
         head = table.select_one("tr")
@@ -284,7 +279,7 @@ def parse_match_stats(html: str) -> list[dict]:
                 k, d = kd.split("-", 1)
                 kills, deaths = int(k), int(d)
 
-            def num(idx: int, pct: bool = False) -> float | None:
+            def num(idx: int) -> float | None:
                 txt = cells[idx].get_text(strip=True).replace("%", "")
                 try:
                     return float(txt)
@@ -292,7 +287,7 @@ def parse_match_stats(html: str) -> list[dict]:
                     return None
 
             adr = num(4)
-            kast = num(6, pct=True)
+            kast = num(6)
             rating = num(8)
             players.append(
                 {
@@ -310,6 +305,48 @@ def parse_match_stats(html: str) -> list[dict]:
         if players:
             out.append({"team": team, "players": players})
     return out
+
+
+def parse_match_stats(html: str) -> list[dict]:
+    """Stats agregados do match (div.matchstats → all-content)."""
+    return parse_stats_root(BeautifulSoup(html, "html.parser"))
+
+
+def attach_map_stats(maps: list[dict], html: str, team_names: set[str]) -> None:
+    """Anexa players/mvp por mapa FINALIZADO — embutidos na própria página.
+
+    Cada mapa com botão STATS tem um div id="<mapstatsid>-content" com as
+    tabelas daquele mapa. Zero requests extra. Mapas live/upcoming ainda
+    não têm esse bloco (aparece quando o mapa termina).
+    """
+    need = [m for m in maps if m.get("stats_url")]
+    if not need:
+        return
+    soup = BeautifulSoup(html, "html.parser")
+    for m in need:
+        mid = re.search(r"mapstatsid/(\d+)", m["stats_url"] or "")
+        if not mid:
+            continue
+        block = soup.find(id=f"{mid.group(1)}-content")
+        if not block:
+            continue
+        stats = parse_stats_root(block)
+        if not stats:
+            continue
+        picked = [s for s in stats if s["team"].casefold() in team_names] or stats
+        # lista plana de jogadores, cada um com o respectivo team
+        players = [
+            {**p, "team": st["team"]} for st in picked for p in st["players"]
+        ]
+        m["players"] = players
+        # MVP do mapa: maior rating da lista plana (empate → kd_ratio)
+        best = max(
+            players,
+            key=lambda p: (p.get("rating") or 0, p.get("kd_ratio") or 0),
+            default=None,
+        )
+        if best and best.get("rating") is not None:
+            m["mvp"] = best
 
 
 def parse_match_maps(html: str, match_live: bool = False) -> list[dict]:
@@ -342,7 +379,14 @@ def parse_match_maps(html: str, match_live: bool = False) -> list[dict]:
                     left.get_text(strip=True): int(lsv),
                     right.get_text(strip=True): int(rsv),
                 }
-        raw.append({"name": name, "score": score, "half": half_txt})
+
+        # botão STATS do mapa → página dedicada de stats por jogador
+        stats_a = mh.select_one('a.results-stats[href*="/stats/matches/mapstatsid/"]')
+        stats_url = (
+            f"{BASE}{stats_a['href']}" if stats_a and stats_a.get("href") else None
+        )
+
+        raw.append({"name": name, "score": score, "half": half_txt, "stats_url": stats_url})
 
     # último mapa com placar = candidato a "em curso" quando o match é live
     last_scored = max(
@@ -364,6 +408,8 @@ def parse_match_maps(html: str, match_live: bool = False) -> list[dict]:
             entry["score"] = m["score"]
         if m["half"]:
             entry["half"] = m["half"]
+        if m["stats_url"]:
+            entry["stats_url"] = m["stats_url"]
         maps.append(entry)
     return maps
 
@@ -809,6 +855,10 @@ def main() -> None:
         maps = parse_match_maps(page, match_live=mt["live"])
         if maps:
             mt["maps"] = maps
+            # Stats por jogador MAPA A MAPA: embutidos na própria página
+            # (div#<mapstatsid>-content) — zero requests extra
+            names = {t["name"].casefold() for t in mt["teams"]}
+            attach_map_stats(maps, page, names)
         watch = parse_watch_links(page)
         if watch:
             mt["watch"] = watch
