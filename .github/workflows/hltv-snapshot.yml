@@ -45,6 +45,11 @@ jobs:
               m = re.search(r"/events/(\d+)/", ev)
               name = f"event-{m.group(1)}.html" if m else "event-custom.html"
               urls[name] = ev
+              # aba Matches do evento = pagina separada /events/<id>/matches
+              if m:
+                  urls[f"event-{m.group(1)}-matches.html"] = (
+                      f"https://www.hltv.org/events/{m.group(1)}/matches"
+                  )
 
           for fn, url in urls.items():
               r = requests.get(url, impersonate="chrome", headers=H, timeout=30)
