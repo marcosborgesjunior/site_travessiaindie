@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HLTV Jogos BR — Regras &amp; Documentação</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #2ea043;
+    --accent2: #58a6ff; --warn: #d29922; --danger: #f85149;
+    --code-bg: #010409;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { display: flex; min-height: 100vh; }
+  nav {
+    width: 250px; flex-shrink: 0; background: var(--panel);
+    border-right: 1px solid var(--border); padding: 1.4rem 1rem;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  nav .brand { font-weight: 700; font-size: 1.05rem; margin-bottom: .2rem; }
+  nav .sub { color: var(--muted); font-size: .78rem; margin-bottom: 1.2rem; }
+  nav a {
+    display: block; color: var(--muted); text-decoration: none;
+    padding: .38rem .6rem; border-radius: 6px; font-size: .88rem;
+  }
+  nav a:hover { background: #21262d; color: var(--text); }
+  main { flex: 1; max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  h1 { font-size: 1.9rem; border-bottom: 1px solid var(--border); padding-bottom: .5rem; }
+  h2 { font-size: 1.35rem; margin-top: 2.6rem; border-bottom: 1px solid var(--border); padding-bottom: .4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; color: var(--accent2); }
+  p, li { color: #c9d1d9; }
+  .muted { color: var(--muted); }
+  code {
+    background: var(--code-bg); border: 1px solid var(--border);
+    padding: .12em .4em; border-radius: 5px; font-size: .87em;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.1rem; overflow-x: auto;
+  }
+  pre code { border: 0; background: none; padding: 0; font-size: .82rem; line-height: 1.55; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 1rem 0;
+    font-size: .9rem;
+  }
+  th, td { border: 1px solid var(--border); padding: .55rem .75rem; text-align: left; }
+  th { background: var(--panel); color: var(--text); }
+  tr:nth-child(even) td { background: #12171e; }
+  .badge {
+    display: inline-block; padding: .1em .6em; border-radius: 999px;
+    font-size: .75rem; font-weight: 600; margin-right: .35rem;
+  }
+  .b-green { background: #1f6f3155; color: #3fb950; border: 1px solid #2ea04366; }
+  .b-blue  { background: #1f6f8f55; color: #58a6ff; border: 1px solid #58a6ff66; }
+  .b-yellow{ background: #6f541f55; color: #d29922; border: 1px solid #d2992266; }
+  .b-red   { background: #6f1f1f55; color: #f85149; border: 1px solid #f8514966; }
+  .callout {
+    border-left: 4px solid var(--accent2); background: var(--panel);
+    padding: .8rem 1.1rem; border-radius: 0 8px 8px 0; margin: 1.2rem 0;
+  }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.danger { border-left-color: var(--danger); }
+  .callout.good { border-left-color: var(--accent); }
+  .callout b:first-child { display: block; margin-bottom: .25rem; }
+  a { color: var(--accent2); }
+  .toc-lvl2 { padding-left: 1rem !important; font-size: .84rem; }
+  footer { margin-top: 4rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  @media (max-width: 800px) {
+    .wrap { flex-direction: column; }
+    nav { width: 100%; height: auto; position: static; border-right: 0; border-bottom: 1px solid var(--border); }
+    main { padding: 1.5rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav>
+  <div class="brand">🇧🇷 HLTV Jogos BR</div>
+  <div class="sub">Regras, estrutura &amp; integração</div>
+  <a href="#visao">Visão geral</a>
+  <a href="#regras">1. Regras de coleta</a>
+  <a class="toc-lvl2" href="#ratelimit">Rate limit</a>
+  <a class="toc-lvl2" href="#detecao">Detecção BR</a>
+  <a href="#estrutura">2. Estrutura do JSON</a>
+  <a class="toc-lvl2" href="#topo">Campos de topo</a>
+  <a class="toc-lvl2" href="#match">Objeto de match</a>
+  <a class="toc-lvl2" href="#live">Array live</a>
+  <a href="#mapas">3. Status dos mapas</a>
+  <a href="#front">4. Integração front</a>
+  <a class="toc-lvl2" href="#cors">CORS &amp; cache</a>
+  <a class="toc-lvl2" href="#exemplo">Exemplos de código</a>
+  <a class="toc-lvl2" href="#ui">Campos para UI</a>
+  <a href="#ops">5. Operação</a>
+  <a href="#limites">6. Limitações</a>
+</nav>
+
+<main>
+
+<h1 id="visao">HLTV — Jogos do Brasil</h1>
+<p>
+  Scraper que varre o <a href="https://www.hltv.org/matches">hltv.org/matches</a>,
+  filtra os jogos com <b>times brasileiros</b> e publica um JSON com horários,
+  séries de mapas, stats, MVP e dados do campeonato.
+</p>
+<table>
+  <tr><td><b>JSON público</b></td><td><code>https://www.travessiaindie.com.br/brazil-matches.json</code></td></tr>
+  <tr><td><b>Fuso</b></td><td><code>America/Sao_Paulo</code> (epoch <code>data-unix</code> convertido)</td></tr>
+  <tr><td><b>Atualização</b></td><td>cron diário <b>00:10 BRT</b> (GitHub Actions → Pages)</td></tr>
+  <tr><td><b>Fontes</b></td><td><code>/matches</code> + <code>/events</code> + páginas dos matches BR</td></tr>
+</table>
+
+<h2 id="regras">1. Regras de coleta <span class="badge b-red">anti-estresse</span></h2>
+
+<table>
+  <tr><th>Regra</th><th>Valor</th><th>Ajuste</th></tr>
+  <tr><td>Cache</td><td><b>Nenhum</b> — cada execução busca fresco</td><td>—</td></tr>
+  <tr><td>Limite de chamadas</td><td><b>20 por execução</b> (corta o resto)</td><td><code>--max-calls</code></td></tr>
+  <tr><td>Ritmo mínimo</td><td><b>1 request a cada 2 minutos</b></td><td><code>--interval</code> (seg)</td></tr>
+  <tr><td>Contador</td><td>campo <code>http_calls</code> no JSON</td><td>—</td></tr>
+  <tr><td>Falha em página de match</td><td>não derruba o run (perde só aquele match)</td><td>—</td></tr>
+  <tr><td>Falha no índice <code>/events</code></td><td>não derruba o run (perde só <code>event_info</code>)</td><td>—</td></tr>
+</table>
+
+<div class="callout">
+  <b>⏱️ Ritmo típico de um run</b>
+  <code>1 (/matches) + 1 (/events) + ~10 páginas de match ≈ 12 chamadas</code><br>
+  duração ≈ <b>25 min</b> → JSON publicado por volta de <b>00:35 BRT</b>.
+</div>
+
+<div class="callout danger">
+  <b>🚫 Cloudflare</b>
+  O HLTV bloqueia rajadas. Se aparecer <code>403</code> / <code>"Just a moment"</code>,
+  a execução <b>aborta com aviso e não retenta</b>. O limite de chamadas é inegociável.
+</div>
+
+<h3 id="detecao">Detecção de time brasileiro (ordem de verificação)</h3>
+<ol>
+  <li><b>Bandeira no markup</b> — <code>img[src$="BR.gif"]</code> ou <code>title="Brazil"</code></li>
+  <li><b>Fallback por nome</b> — o HLTV nem sempre renderiza bandeira. Nome
+    (case-insensitive) na lista <code>BR_TEAM_NAMES</code>:
+    <code>furia, mibr, imperial, pain, legacy, fluxo, red canids, godsent, sharks,
+    intz, w7m, case, havan libre, kabum, los héroes, br crowd</code>
+    + qualquer nome terminado em <code>" br"</code> (ex.: <code>Low Cortisol BR</code>)</li>
+  <li><b>Exceção manual</b> — <code>BR_EXCLUDED_NAMES = {"bestia"}</code>:
+    sobrepõe até a bandeira do HLTV (o site mostra BR errado; Bestia é argentina)</li>
+</ol>
+<p class="muted">Um match entra no JSON se <b>qualquer</b> um dos dois times for BR.</p>
+
+<h2 id="estrutura">2. Estrutura do JSON</h2>
+
+<h3 id="topo">Campos de topo</h3>
+<pre><code>{
+  "source": "https://www.hltv.org/matches",
+  "scraped_at": "2026-10-30T17:10:31+00:00",  // UTC — quando rodou
+  "timezone": "America/Sao_Paulo",
+  "total_matches": 10,
+  "http_calls": 12,     // chamadas desta execução (teto 20)
+
+  "live": [ /* jogos AO VIVO agora — ver abaixo */ ],
+
+  "days": [             // agrupado por dia (SP), ordenado
+    { "date": "2026-10-30", "weekday": "sexta", "matches": [ /* ... */ ] }
+  ]
+}</code></pre>
+
+<h3 id="match">Objeto de match (<code>days[].matches[]</code>)</h3>
+<pre><code>{
+  "series": {                       // série de mapas (quando a página carregou)
+    "format": "md3",                // md3 (bo3) | md5 (bo5)
+    "current_map": "Mirage",        // mapa em curso   (null se nenhum)
+    "next_map": "Cache",            // próximo mapa    (null se não há)
+    "finished_maps": ["Dust2"],
+    "maps": [
+      { "name": "Dust2",  "status": "done",     "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )" },
+      { "name": "Mirage", "status": "live",     "score": {"MOUZ":4,"FURIA":8},  "half": "( 4 : 8 ; -:- )" },
+      { "name": "Cache",  "status": "upcoming" }
+    ]
+  },
+
+  "time": "12:00",                  // SP (null só em live[])
+  "event": "PGL Masters Bucharest 2026",
+  "event_id": "8050",               // cruza com hltv.org/events/<id>/
+  "format": "bo3",                  // formato cru do HLTV
+  "live": false,
+  "stars": 5,                       // destaque HLTV 0–5
+  "match_id": "2399757",
+  "url": "https://www.hltv.org/matches/2399757/...",
+  "teams": [
+    { "name": "MOUZ",  "country": null,     "is_brazil": false },
+    { "name": "FURIA", "country": "Brazil", "is_brazil": true  }
+  ],
+
+  "stats": [                        // por time
+    { "team": "FURIA", "players": [
+      { "nick": "molodoy", "kills": 24, "deaths": 9,
+        "kd_ratio": 2.67, "adr": 98.9, "kast": 89.5, "rating": 1.86 }
+      /* ... */
+    ]}
+  ],
+
+  "mvp": {                          // MAIOR rating (empate → maior kd_ratio)
+    "nick": "molodoy", "team": "FURIA",
+    "kills": 24, "deaths": 9, "kd_ratio": 2.67,
+    "adr": 98.9, "kast": 89.5, "rating": 1.86
+  },
+
+  "watch": ["https://www.twitch.tv/pgl", "..."],   // streams do jogo
+
+  "event_info": {                   // cruzado com /events via event_id
+    "name": "PGL Masters Bucharest 2026",
+    "url": "https://www.hltv.org/events/8050/...",
+    "start": "2026-10-24",          // datas completas do campeonato (SP)
+    "end": "2026-10-31",
+    "location": "Bucharest, Romania (Romania)",
+    "prize": "$1,000,000",
+    "prize_distribution": { "player_share": "$350,000", "club_share": "$650,000" },
+    "teams_count": 8,
+    "lan": true
+  }
+}</code></pre>
+
+<h3 id="live">Array <code>live[]</code> — ao vivo agora</h3>
+<table>
+  <tr><th>Campo</th><th>Valor em live</th></tr>
+  <tr><td><code>time</code></td><td><code>null</code> (o markup live não traz horário)</td></tr>
+  <tr><td><code>live</code></td><td><code>true</code></td></tr>
+  <tr><td><code>score</code></td><td><code>{ "rounds": {"Nemiga":13,"Vitality":8}, "maps": {"Nemiga":1,"Vitality":0} }</code></td></tr>
+  <tr><td><code>series</code> / <code>stats</code> / <code>mvp</code></td><td>presentes se a página do match foi lida</td></tr>
+</table>
+<p class="muted">
+  <code>score.rounds</code> = placar do <b>mapa atual</b> ·
+  <code>score.maps</code> = <b>série</b> (maps vencidos) ·
+  vem do SSR do <code>/matches</code> — atualiza por execução, <b>não</b> em tempo real.
+</p>
+
+<h2 id="mapas">3. Status dos mapas</h2>
+<table>
+  <tr><th><code>status</code></th><th>Significado</th><th>Marcador</th></tr>
+  <tr><td><code>done</code></td><td>mapa finalizado (placar e tempos preenchidos)</td><td><span class="badge b-green">✓ done</span></td></tr>
+  <tr><td><code>live</code></td><td>em curso — <code>half</code> com <code>"-:-"</code> ou último mapa com placar com o match ao vivo</td><td><span class="badge b-yellow">● live</span></td></tr>
+  <tr><td><code>upcoming</code></td><td>ainda não começou (sem placar)</td><td><span class="badge b-blue">○ upcoming</span></td></tr>
+</table>
+<p class="muted"><code>series.format</code>: <code>md3</code> = melhor de 3 · <code>md5</code> = melhor de 5 (inferido de <code>bo3</code>/<code>bo5</code> ou da contagem de mapas).</p>
+
+<h2 id="front">4. Integração front</h2>
+
+<h3 id="cors">CORS &amp; cache</h3>
+<pre><code>GET https://www.travessiaindie.com.br/brazil-matches.json
+
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: *        ← CORS liberado (qualquer origem)
+Cache-Control: max-age=600            ← CDN guarda 10 min</code></pre>
+
+<div class="callout warn">
+  <b>⚠️ Cache do CDN (10 min)</b>
+  Para forçar versão nova na mão: adicione <code>?cb=1</code> no fim da URL.
+  Em produção não precisa — basta buscar de novo a cada atualização do seu front.
+</div>
+
+<h3 id="exemplo">Exemplo mínimo (vanilla JS)</h3>
+<pre><code>const URL = "https://www.travessiaindie.com.br/brazil-matches.json";
+
+async function carregar() {
+  const r = await fetch(URL, { cache: "no-store" });
+  const data = await r.json();
+
+  // 1) Jogos de hoje
+  const hoje = data.days.find(d => d.date === new Date().toISOString().slice(0, 10))
+            ?? data.days[0];
+
+  // 2) Ao vivo agora
+  for (const m of data.live) {
+    const placar = Object.entries(m.score?.rounds ?? {})
+      .map(([t, v]) => `${t} ${v}`).join(" x ");
+    console.log(`AO VIVO: ${placar}`);
+  }
+
+  // 3) Agenda do dia com séries e MVP
+  for (const m of hoje.matches) {
+    const br  = m.teams.filter(t => t.is_brazil).map(t => t.name);
+    const adv = m.teams.filter(t => !t.is_brazil).map(t => t.name);
+    const mapa  = m.series?.current_map ? ` [${m.series.current_map}]` : "";
+    const mvp   = m.mvp ? ` MVP: ${m.mvp.nick} (${m.mvp.rating})` : "";
+    console.log(`${m.time} ${br} x ${adv}${mapa} — ${m.event}${mvp}`);
+  }
+
+  return data;
+}</code></pre>
+
+<h3>React</h3>
+<pre><code>function useJogosBR() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch("https://www.travessiaindie.com.br/brazil-matches.json")
+      .then(r => r.json())
+      .then(setData);
+  }, []);
+  return data;   // { live, days, total_matches, http_calls, ... }
+}</code></pre>
+
+<h3 id="ui">Campos mais úteis para UI</h3>
+<table>
+  <tr><th>UI</th><th>Campo</th></tr>
+  <tr><td>Badge "AO VIVO"</td><td><code>live === true</code> ou presença em <code>data.live</code></td></tr>
+  <tr><td>Placar do mapa atual</td><td><code>score.rounds</code> · série <code>score.maps</code></td></tr>
+  <tr><td>Progresso da série</td><td><code>series.maps[]</code> com <code>status</code> (✓ ● ○)</td></tr>
+  <tr><td>Selo "MVP"</td><td><code>mvp.nick</code> + <code>mvp.rating</code></td></tr>
+  <tr><td>Tag do campeonato + prêmio</td><td><code>event</code> + <code>event_info.prize</code></td></tr>
+  <tr><td>Bandeirinha BR</td><td><code>teams[].is_brazil</code></td></tr>
+  <tr><td>"atualizado há X"</td><td><code>scraped_at</code> (UTC ISO)</td></tr>
+</table>
+
+<h2 id="ops">5. Operação (GitHub Actions)</h2>
+<table>
+  <tr><th>Workflow</th><th>Gatilho</th><th>O que faz</th></tr>
+  <tr>
+    <td><b>Jogos BR (HLTV)</b></td>
+    <td>cron <code>10 3 * * *</code> (00:10 BRT) + manual</td>
+    <td>roda <code>hltv/scraper.py</code> → commita <code>brazil-matches.json</code> → Pages publica</td>
+  </tr>
+  <tr>
+    <td><b>Snapshot HLTV (events)</b></td>
+    <td>manual (botão)</td>
+    <td>baixa <code>/events</code>, página de evento, <code>/highlights</code>, match live → <code>hltv/snapshots/</code></td>
+  </tr>
+</table>
+<ul>
+  <li>Código: <code>hltv/scraper.py</code> · dependências: <code>hltv/requirements.txt</code></li>
+  <li>Log de chamadas: <code>[n/20] GET ...</code> no stderr do workflow</li>
+  <li>Diagnóstico de URLs: <code>hltv/snapshots/STATUS.txt</code></li>
+</ul>
+
+<h3>Rodar localmente</h3>
+<pre><code>pip install -r hltv/requirements.txt
+python hltv/scraper.py --out brazil-matches.json
+python hltv/scraper.py --max-calls 10 --interval 60   # mais conservador</code></pre>
+
+<h2 id="limites">6. Limitações conhecidas <span class="badge b-yellow">honestidade</span></h2>
+<ol>
+  <li><b>Highlights de vídeo</b> — <code>/highlights</code> retorna <b>404</b> (removida no
+    redesign) e a página de match não tem seção de highlights.
+    <b>Não há fonte HTML</b> para melhores momentos.</li>
+  <li><b>Tempo real</b> — o scorebot usa websocket; nosso score é snapshot do
+    momento da execução (atualiza a cada run do cron).</li>
+  <li><b>Stats por mapa individual</b> — as tabelas são agregadas por time
+    (Both/T/CT); K-D por mapa exigiria <code>/stats/matches/mapstatsid/...</code>
+    (não integrada — custo extra de chamadas).</li>
+  <li><b>Jogo ao vivo sem horário</b> — entra só em <code>live[]</code>, sem <code>time</code>
+    (o markup não expõe o início).</li>
+  <li><b>Cache do CDN</b> — o JSON pode estar até 10 min atrás do
+    <code>scraped_at</code> se o consumidor pegar o cache do edge.</li>
+</ol>
+
+<footer>
+  Travessia Indie · Scraper HLTV · docs em <code>DOC/README.md</code> (Markdown) e
+  <code>DOC/index.html</code> (esta página) · JSON:
+  <a href="https://www.travessiaindie.com.br/brazil-matches.json">brazil-matches.json</a>
+</footer>
+
+</main>
+</div>
+</body>
+</html>
