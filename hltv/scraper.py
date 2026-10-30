@@ -30,6 +30,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -239,6 +240,97 @@ def is_brazil_team_name(name: str | None) -> bool:
     return n in BR_TEAM_NAMES or n.endswith(" br")
 
 
+def parse_match_stats(html: str) -> list[dict]:
+    """Stats por jogador da página de um match (div.matchstats).
+
+    Tabelas vêm por time × lado (Both/T/CT); a primeira de cada time é a
+    agregada. Colunas: nome, K-D, eK-eD, Swing, ADR, eADR, KAST, eKAST, Rating.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    out: list[dict] = []
+    seen_teams: set[str] = set()
+    for table in soup.select("table"):
+        if not table.select_one("td.adr"):
+            continue
+        head = table.select_one("tr")
+        first_cell = head.select_one("td") if head else None
+        team = first_cell.get_text(strip=True) if first_cell else None
+        if not team or team in seen_teams:
+            continue
+        seen_teams.add(team)
+
+        players: list[dict] = []
+        for tr in table.select("tr")[1:]:
+            cells = tr.select("td")
+            if len(cells) < 9:
+                continue
+            nick_el = tr.select_one('a[href^="/player/"]')
+            raw = nick_el.get_text(" ", strip=True) if nick_el else cells[0].get_text(strip=True)
+            # célula vem como "Dorian 'xertioN' Berman xertioN" → apelido entre aspas
+            m_nick = re.search(r"'([^']+)'", raw)
+            nick = m_nick.group(1).strip() if m_nick else raw.strip()
+            kd = cells[1].get_text(strip=True)
+            kills = deaths = None
+            if "-" in kd:
+                k, d = kd.split("-", 1)
+                kills, deaths = int(k), int(d)
+
+            def num(idx: int, pct: bool = False) -> float | None:
+                txt = cells[idx].get_text(strip=True).replace("%", "")
+                try:
+                    return float(txt)
+                except ValueError:
+                    return None
+
+            adr = num(4)
+            kast = num(6, pct=True)
+            rating = num(8)
+            players.append(
+                {
+                    "nick": nick,
+                    "kills": kills,
+                    "deaths": deaths,
+                    "kd_ratio": round(kills / deaths, 2)
+                    if kills is not None and deaths
+                    else None,
+                    "adr": adr,
+                    "kast": kast,
+                    "rating": rating,
+                }
+            )
+        if players:
+            out.append({"team": team, "players": players})
+    return out
+
+
+def parse_watch_links(html: str) -> list[str]:
+    """Links externos de transmissão (stream-box) da página do match."""
+    soup = BeautifulSoup(html, "html.parser")
+    seen: list[str] = []
+    for a in soup.select("div.external-stream a[href]"):
+        href = str(a.get("href") or "")
+        if href.startswith("http") and href not in seen:
+            seen.append(href)
+    return seen
+
+
+def fetch_match_page(match_id: str, url: str, fresh: bool = False) -> str | None:
+    """Página de um match BR com cache diário. None se falhar (não fatal)."""
+    today = datetime.now(SP).strftime("%Y-%m-%d")
+    cache_file = CACHE_DIR / f"match-{match_id}-{today}.html"
+    if cache_file.exists() and not fresh:
+        return cache_file.read_text(encoding="utf-8")
+    try:
+        html = fetch(url)
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! match page {match_id}: {e}", file=sys.stderr)
+        return None
+    CACHE_DIR.mkdir(exist_ok=True)
+    cache_file.write_text(html, encoding="utf-8")
+    time.sleep(0.6)  # respiro entre fetches de páginas de match
+    return html
+
+
 def parse_team(wrapper_team) -> dict:
     name_el = wrapper_team.select_one(".match-teamname")
     name = name_el.get_text(strip=True) if name_el else "(TBD)"
@@ -281,6 +373,17 @@ def parse_match(wrapper, section_date: str | None) -> dict:
     time_el = wrapper.select_one(".match-time")
     unix_ms = int(time_el["data-unix"]) if time_el and time_el.get("data-unix") else None
 
+    # Lives: rounds do mapa atual e maps vencidos (renderizados no SSR do /matches)
+    score = None
+    if live:
+        sc = wrapper.select("[data-livescore-current-map-score]")
+        mp = wrapper.select("[data-livescore-maps-won-for]")
+        if sc or mp:
+            score = {
+                "rounds": [int(x.get_text(strip=True) or 0) for x in sc],
+                "maps": [int(x.get_text(strip=True) or 0) for x in mp],
+            }
+
     # Times reais vivem em a.match-teams > .match-team; descarta blocos sem nome
     teams = [
         parse_team(t)
@@ -295,6 +398,7 @@ def parse_match(wrapper, section_date: str | None) -> dict:
         "event_id": wrapper.get("data-event-id"),
         "format": fmt,
         "live": live,
+        "score": score,
         "stars": int(wrapper.get("data-stars") or 0),
         "match_id": match_id,
         "url": f"{BASE}{href}" if href.startswith("/") else href,
@@ -338,6 +442,8 @@ def dedup_by_id(matches: list[dict]) -> list[dict]:
                 base["format"] = other["format"]
             if base.get("event_id") is None and other.get("event_id"):
                 base["event_id"] = other["event_id"]
+            if base.get("score") is None and other.get("score"):
+                base["score"] = other["score"]
             if base["stars"] == 0 and other["stars"] > 0:
                 base["stars"] = other["stars"]
             if not base["teams"]:
@@ -380,23 +486,37 @@ def parse_page(html: str) -> list[dict]:
 
     matches = dedup_by_id(matches)
 
-    # Filtra Brasil com horário definido e ordena por horário (São Paulo).
-    # Ao vivo (wrapper sem .match-time) fica de fora por não ter horário.
+    # Filtra Brasil: datados (com horário) ou ao vivo (sem horário, com flag live)
     br = [
         mt
         for mt in matches
-        if mt["unix_ms"] is not None and any(t["is_brazil"] for t in mt["teams"])
+        if any(t["is_brazil"] for t in mt["teams"])
+        and (mt["unix_ms"] is not None or mt["live"])
     ]
-    return sorted(br, key=lambda x: x["unix_ms"] or 0)
+    return sorted(br, key=lambda x: (x["unix_ms"] is None, x["unix_ms"] or 0))
 
 
 def build_output(matches: list[dict], events_index: dict[str, dict] | None = None) -> dict:
     events_index = events_index or {}
     days: dict[str, list[dict]] = {}
+    live_items: list[dict] = []
+
+    def score_named(mt: dict) -> dict | None:
+        """Converte score [por team1/team2] em dict nomeado por time."""
+        if not mt.get("score"):
+            return None
+        names = [t["name"] for t in mt["teams"]]
+        out: dict[str, dict] = {}
+        for key in ("rounds", "maps"):
+            vals = mt["score"].get(key) or []
+            out[key] = {
+                names[i]: vals[i] for i in range(min(len(names), len(vals)))
+            }
+        return out or None
+
     for mt in matches:
-        dt_sp = datetime.fromtimestamp(mt["unix_ms"] / 1000, tz=SP)
         item = {
-            "time": dt_sp.strftime("%H:%M"),
+            "time": None,
             "event": mt["event"],
             "event_id": mt.get("event_id"),
             "format": mt["format"],
@@ -409,6 +529,22 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
                 for t in mt["teams"]
             ],
         }
+        sc = score_named(mt)
+        if sc:
+            item["score"] = sc
+        if mt.get("stats"):
+            item["stats"] = mt["stats"]
+        if mt.get("watch"):
+            item["watch"] = mt["watch"]
+
+        if mt["unix_ms"] is None:
+            # ao vivo sem horário de início no markup
+            live_items.append(item)
+            continue
+
+        dt_sp = datetime.fromtimestamp(mt["unix_ms"] / 1000, tz=SP)
+        item["time"] = dt_sp.strftime("%H:%M")
+
         # Cruza com /events: datas completas do campeonato, local, URL
         info = events_index.get(mt.get("event_id") or "")
         if info:
@@ -448,11 +584,27 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
         "scraped_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "timezone": "America/Sao_Paulo",
         "total_matches": len(matches),
+        "live": live_items,
         "days": out_days,
     }
 
 
 def print_table(data: dict) -> None:
+    if data.get("live"):
+        print("\n== AO VIVO ==")
+        for mt in data["live"]:
+            vs = " x ".join(t["name"] for t in mt["teams"])
+            flags = "".join(" [BR]" if t["is_brazil"] else "" for t in mt["teams"])
+            ev = mt["event"] or "-"
+            sc = mt.get("score", {})
+            rounds = sc.get("rounds", {})
+            maps = sc.get("maps", {})
+            score_txt = ""
+            if rounds:
+                r = "-".join(str(v) for v in rounds.values())
+                m = " / ".join(f"{k}:{v}" for k, v in maps.items())
+                score_txt = f"  [{r} rounds" + (f" | {m}]" if m else "]")
+            print(f"  ● {vs}{flags}  — {ev}{score_txt}")
     for day in data["days"]:
         print(f"\n== {day['date']} ({day['weekday']}) ==")
         for mt in day["matches"]:
@@ -504,6 +656,22 @@ def main() -> None:
     except Exception as e:  # noqa: BLE001 - matches continuam publicáveis
         print(f"! indice de eventos indisponivel ({e}); seguindo sem event_info", file=sys.stderr)
     print(f"Eventos no indice: {len(events_index)}", file=sys.stderr)
+
+    # Stats por jogador + links de transmissão (páginas dos matches BR,
+    # cache diário — ~10 req/dia com respiro; falha não derruba o run)
+    print(f"Paginas de match: {len(matches)} ...", file=sys.stderr)
+    for mt in matches:
+        page = fetch_match_page(mt["match_id"], mt["url"], fresh=args.fresh)
+        if not page:
+            continue
+        stats = parse_match_stats(page)
+        if stats:
+            names = {t["name"].casefold() for t in mt["teams"]}
+            picked = [s for s in stats if s["team"].casefold() in names]
+            mt["stats"] = picked or stats
+        watch = parse_watch_links(page)
+        if watch:
+            mt["watch"] = watch
 
     data = build_output(matches, events_index)
     with open(args.out, "w", encoding="utf-8") as f:

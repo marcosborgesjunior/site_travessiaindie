@@ -1,8 +1,9 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-10-30T15:50:39+00:00",
+  "scraped_at": "2026-10-30T16:38:07+00:00",
   "timezone": "America/Sao_Paulo",
   "total_matches": 10,
+  "live": [],
   "days": [
     {
       "date": "2026-10-30",
@@ -115,6 +116,184 @@
               "country": "Brazil",
               "is_brazil": true
             }
+          ],
+          "stats": [
+            {
+              "team": "MOUZ",
+              "players": [
+                {
+                  "nick": "xertioN",
+                  "kills": 14,
+                  "deaths": 14,
+                  "kd_ratio": 1.0,
+                  "adr": 73.4,
+                  "kast": 68.4,
+                  "rating": 1.13
+                },
+                {
+                  "nick": "PR",
+                  "kills": 12,
+                  "deaths": 17,
+                  "kd_ratio": 0.71,
+                  "adr": 80.3,
+                  "kast": 52.6,
+                  "rating": 1.0
+                },
+                {
+                  "nick": "torzsi",
+                  "kills": 11,
+                  "deaths": 15,
+                  "kd_ratio": 0.73,
+                  "adr": 66.8,
+                  "kast": 73.7,
+                  "rating": 0.78
+                },
+                {
+                  "nick": "xelex",
+                  "kills": 6,
+                  "deaths": 13,
+                  "kd_ratio": 0.46,
+                  "adr": 44.8,
+                  "kast": 63.2,
+                  "rating": 0.6
+                },
+                {
+                  "nick": "Spinx",
+                  "kills": 7,
+                  "deaths": 15,
+                  "kd_ratio": 0.47,
+                  "adr": 58.9,
+                  "kast": 47.4,
+                  "rating": 0.51
+                }
+              ]
+            },
+            {
+              "team": "FURIA",
+              "players": [
+                {
+                  "nick": "molodoy",
+                  "kills": 24,
+                  "deaths": 9,
+                  "kd_ratio": 2.67,
+                  "adr": 98.9,
+                  "kast": 89.5,
+                  "rating": 1.86
+                },
+                {
+                  "nick": "YEKINDAR",
+                  "kills": 16,
+                  "deaths": 12,
+                  "kd_ratio": 1.33,
+                  "adr": 106.5,
+                  "kast": 84.2,
+                  "rating": 1.51
+                },
+                {
+                  "nick": "yuurih",
+                  "kills": 14,
+                  "deaths": 8,
+                  "kd_ratio": 1.75,
+                  "adr": 68.8,
+                  "kast": 84.2,
+                  "rating": 1.42
+                },
+                {
+                  "nick": "KSCERATO",
+                  "kills": 11,
+                  "deaths": 8,
+                  "kd_ratio": 1.38,
+                  "adr": 62.5,
+                  "kast": 73.7,
+                  "rating": 1.31
+                },
+                {
+                  "nick": "FalleN",
+                  "kills": 9,
+                  "deaths": 13,
+                  "kd_ratio": 0.69,
+                  "adr": 58.0,
+                  "kast": 78.9,
+                  "rating": 0.85
+                }
+              ]
+            }
+          ],
+          "watch": [
+            "https://www.youtube.com/watch?v=XCRwkYCcqjA",
+            "https://www.youtube.com/watch?v=nZ2CevoATVE",
+            "https://www.twitch.tv/strogo",
+            "https://www.twitch.tv/pgl",
+            "https://kick.com/gaules",
+            "https://www.youtube.com/watch?v=ATG-MuLgfpc",
+            "https://www.youtube.com/watch?v=iu2_719Cf7Q",
+            "https://www.youtube.com/watch?v=Wasrlxg0POA",
+            "https://www.twitch.tv/bysl4m",
+            "https://www.twitch.tv/skywhywalker",
+            "https://www.twitch.tv/cs2_paragon_ru",
+            "https://www.youtube.com/watch?v=r7oqagG21KY",
+            "https://www.youtube.com/watch?v=uqEwuL20ypk",
+            "https://www.twitch.tv/dmitry_lixxx",
+            "https://www.youtube.com/watch?v=T3YPLDbAOa4",
+            "https://www.twitch.tv/pelaajatcom",
+            "https://www.youtube.com/watch?v=uLY2ELDuec8",
+            "https://www.youtube.com/watch?v=yEYFQ0N2AYM",
+            "https://www.twitch.tv/roman",
+            "https://www.twitch.tv/happychucky",
+            "https://www.twitch.tv/CS2_maincast",
+            "https://www.twitch.tv/izakooo",
+            "https://www.twitch.tv/krl_stream",
+            "https://www.twitch.tv/watchfulTV",
+            "https://kick.com/michel",
+            "https://kick.com/pgl",
+            "https://www.twitch.tv/psp1g",
+            "https://www.twitch.tv/mauisnake",
+            "https://www.twitch.tv/redcs",
+            "https://www.twitch.tv/madhousetv_",
+            "https://www.twitch.tv/x9nium",
+            "https://kick.com/bladeito",
+            "https://www.youtube.com/watch?v=Io4dsEfV8Nw",
+            "https://www.twitch.tv/michel",
+            "https://www.twitch.tv/snailkick",
+            "https://kick.com/cskyf",
+            "https://kick.com/x9nium",
+            "https://kick.com/polex",
+            "https://www.twitch.tv/esport1TV",
+            "https://www.twitch.tv/heatoncs",
+            "https://www.twitch.tv/forzorezor",
+            "https://www.twitch.tv/polex",
+            "https://www.youtube.com/watch?v=6YX7Zu9k4QM",
+            "https://www.twitch.tv/perfecto_of",
+            "https://kick.com/zurys1337",
+            "https://www.twitch.tv/zonixxcs",
+            "https://kick.com/jaxi",
+            "https://www.youtube.com/watch?v=6ieumErSi-0",
+            "https://kick.com/heaton",
+            "https://www.twitch.tv/Trottah",
+            "https://www.twitch.tv/esportstudion",
+            "https://www.twitch.tv/blackelespanolito",
+            "https://www.twitch.tv/gr0mjkeee",
+            "https://kick.com/oskartommy",
+            "https://www.twitch.tv/bt0tv",
+            "https://www.youtube.com/watch?v=43nrm_9xiYM",
+            "https://www.youtube.com/watch?v=Idk4eNShdZI",
+            "https://www.twitch.tv/okkocyber",
+            "https://www.youtube.com/watch?v=L7YO_MjR0b8",
+            "https://www.twitch.tv/bopomo_",
+            "https://www.twitch.tv/esportsbulgaria",
+            "https://kick.com/bopomo",
+            "https://www.twitch.tv/mgfongabe",
+            "https://kick.com/pelaajatcom",
+            "https://kick.com/barstooltv",
+            "https://kick.com/trottah",
+            "https://kick.com/zonixx",
+            "https://kick.com/tvarenaesport",
+            "https://kick.com/esportsbg",
+            "https://kick.com/krl_stream",
+            "https://www.youtube.com/watch?v=vp_WlVqMkSo",
+            "https://www.twitch.tv/ViperDemon",
+            "https://kick.com/esportstudion",
+            "https://www.twitch.tv/cyberfocus"
           ],
           "event_info": {
             "name": "PGL Masters Bucharest 2026",
