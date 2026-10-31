@@ -616,8 +616,6 @@ def parse_page(html: str) -> list[dict]:
 
 def build_output(matches: list[dict], events_index: dict[str, dict] | None = None) -> dict:
     events_index = events_index or {}
-    days: dict[str, list[dict]] = {}
-    live_items: list[dict] = []
 
     def score_named(mt: dict) -> dict | None:
         """Converte score [por team1/team2] em dict nomeado por time."""
@@ -632,10 +630,13 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
             }
         return out or None
 
+    today_sp = datetime.now(SP).strftime("%Y-%m-%d")
+    items: list[dict] = []
+
     for mt in matches:
         item: dict = {}
 
-        # Cabeçalho: série de mapas com status (md3/md5)
+        # Série de mapas com status (md3/md5)
         maps = mt.get("maps") or []
         if maps:
             fmt = (mt.get("format") or "").lower()
@@ -658,6 +659,7 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
         item.update(
             {
                 "time": None,
+                "date": None,
                 "event": mt["event"],
                 "event_id": mt.get("event_id"),
                 "format": mt["format"],
@@ -682,14 +684,14 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
             item["watch"] = mt["watch"]
 
         if mt["unix_ms"] is None:
-            # ao vivo sem horário de início no markup
-            live_items.append(item)
-            continue
+            # ao vivo sem horário no markup: data = hoje (acontecendo agora)
+            item["date"] = today_sp
+        else:
+            dt_sp = datetime.fromtimestamp(mt["unix_ms"] / 1000, tz=SP)
+            item["time"] = dt_sp.strftime("%H:%M")
+            item["date"] = dt_sp.strftime("%Y-%m-%d")
 
-        dt_sp = datetime.fromtimestamp(mt["unix_ms"] / 1000, tz=SP)
-        item["time"] = dt_sp.strftime("%H:%M")
-
-        # Cruza com /events: datas completas do campeonato, local, URL
+        # Cruza com /events: datas completas do campeonato, local, prêmio
         info = events_index.get(mt.get("event_id") or "")
         if info:
             if not item["event"]:
@@ -714,49 +716,74 @@ def build_output(matches: list[dict], events_index: dict[str, dict] | None = Non
             if info.get("lan"):
                 ev["lan"] = True
             item["event_info"] = ev
-        days.setdefault(dt_sp.strftime("%Y-%m-%d"), []).append(item)
 
-    out_days = []
-    for date in sorted(days):
-        en_wd = datetime.strptime(date, "%Y-%m-%d").strftime("%A")
-        out_days.append(
-            {"date": date, "weekday": WEEKDAYS_PT.get(en_wd, en_wd), "matches": days[date]}
+        items.append(item)
+
+    # Ordem: ao vivo primeiro, depois por data e horário
+    items.sort(key=lambda m: (0 if m["live"] else 1, m["date"] or "", m["time"] or ""))
+
+    # Índice compacto para a UI ao vivo (volátil — o que muda a cada run)
+    live_score = []
+    for m in items:
+        if not m["live"]:
+            continue
+        s = m.get("series") or {}
+        live_score.append(
+            {
+                "match_id": m["match_id"],
+                "url": m["url"],
+                "event": m["event"],
+                "format": m["format"],
+                "teams": m["teams"],
+                "score": m.get("score"),
+                "series_format": s.get("format"),
+                "current_map": s.get("current_map"),
+                "next_map": s.get("next_map"),
+                "finished_maps": s.get("finished_maps", []),
+            }
         )
 
     return {
         "source": URL,
         "scraped_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "timezone": "America/Sao_Paulo",
-        "total_matches": len(matches),
-        "live": live_items,
-        "days": out_days,
+        "total_matches": len(items),
+        "matches": items,
+        "liveScore": live_score,
     }
 
 
 def print_table(data: dict) -> None:
-    if data.get("live"):
+    if data.get("liveScore"):
         print("\n== AO VIVO ==")
-        for mt in data["live"]:
-            vs = " x ".join(t["name"] for t in mt["teams"])
-            flags = "".join(" [BR]" if t["is_brazil"] else "" for t in mt["teams"])
-            ev = mt["event"] or "-"
-            sc = mt.get("score", {})
-            rounds = sc.get("rounds", {})
-            maps = sc.get("maps", {})
+        for m in data["liveScore"]:
+            vs = " x ".join(t["name"] for t in m["teams"])
+            flags = "".join(" [BR]" if t["is_brazil"] else "" for t in m["teams"])
+            sc = m.get("score") or {}
+            rounds = sc.get("rounds") or {}
             score_txt = ""
             if rounds:
-                r = "-".join(str(v) for v in rounds.values())
-                m = " / ".join(f"{k}:{v}" for k, v in maps.items())
-                score_txt = f"  [{r} rounds" + (f" | {m}]" if m else "]")
-            print(f"  ● {vs}{flags}  — {ev}{score_txt}")
-    for day in data["days"]:
-        print(f"\n== {day['date']} ({day['weekday']}) ==")
-        for mt in day["matches"]:
+                score_txt = "  [" + "-".join(str(v) for v in rounds.values()) + "]"
+            mapa = f" ({m['current_map']})" if m.get("current_map") else ""
+            print(f"  ● {vs}{flags}{score_txt}{mapa} — {m['event'] or '-'}")
+
+    # Agenda agrupada por data (só exibição — o JSON é flat)
+    by_date: dict[str, list[dict]] = {}
+    for m in data["matches"]:
+        by_date.setdefault(m["date"] or "?", []).append(m)
+    for date in sorted(by_date):
+        en_wd = (
+            datetime.strptime(date, "%Y-%m-%d").strftime("%A") if date != "?" else "?"
+        )
+        wd = WEEKDAYS_PT.get(en_wd, en_wd)
+        print(f"\n== {date} ({wd}) ==")
+        for mt in by_date[date]:
             vs = " x ".join(t["name"] for t in mt["teams"])
             flags = "".join(" [BR]" if t["is_brazil"] else "" for t in mt["teams"])
             live = " (AO VIVO)" if mt["live"] else ""
             ev = mt["event"] or "-"
-            line = f"  {mt['time']}  {vs}{flags}  — {ev} ({mt['format'] or '?'}){live}"
+            t = mt["time"] or "--:--"
+            line = f"  {t}  {vs}{flags}  — {ev} ({mt['format'] or '?'}){live}"
             s = mt.get("series")
             if s:
                 parts = []

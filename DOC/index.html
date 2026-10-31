@@ -163,39 +163,19 @@
   "total_matches": 10,
   "http_calls": 12,     // chamadas desta execução (teto 20)
 
-  "live": [ /* jogos AO VIVO agora — ver abaixo */ ],
+  "matches": [          // array FLAT: lives primeiro, depois data/hora
+    { /* match — ver abaixo */ }
+  ],
 
-  "days": [             // agrupado por dia (SP), ordenado
-    { "date": "2026-10-30", "weekday": "sexta", "matches": [ /* ... */ ] }
+  "liveScore": [        // índice compacto do que está AO VIVO
+    { /* volátil: placar, mapa atual */ }
   ]
 }</code></pre>
 
-<h3 id="match">Objeto de match (<code>days[].matches[]</code>)</h3>
+<h3 id="match">Objeto de match (<code>matches[]</code>)</h3>
 <pre><code>{
-  "series": {                       // série de mapas (quando a página carregou)
-    "format": "md3",                // md3 (bo3) | md5 (bo5)
-    "current_map": "Mirage",        // mapa em curso   (null se nenhum)
-    "next_map": "Cache",            // próximo mapa    (null se não há)
-    "finished_maps": ["Dust2"],
-    "maps": [
-      {
-        "name": "Dust2", "status": "done",
-        "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )",
-        "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243227/...",
-        // só em mapas FINALIZADOS (bloco embutido na página, zero requests):
-        "players": [                     // lista PLANA — 10 jogadores
-          { "nick":"molodoy", "team":"FURIA", "kills":24, "deaths":9,
-            "kd_ratio":2.67, "adr":98.9, "kast":89.5, "rating":1.86 },
-          ...
-        ],
-        "mvp": { "nick":"molodoy", "team":"FURIA", "rating":1.86 }  // maior rating DO MAPA
-      },
-      { "name": "Mirage", "status": "live", "score": {"MOUZ":4,"FURIA":8}, "half": "( 4 : 8 ; -:- )" },
-      { "name": "Cache",  "status": "upcoming" }
-    ]
-  },
-
-  "time": "12:00",                  // SP (null só em live[])
+  "time": "12:00",                  // SP (null em lives — markup sem horário)
+  "date": "2026-10-30",             // SP — em lives = hoje (acontecendo agora)
   "event": "PGL Masters Bucharest 2026",
   "event_id": "8050",               // cruza com hltv.org/events/<id>/
   "format": "bo3",                  // formato cru do HLTV
@@ -237,13 +217,16 @@
   }
 }</code></pre>
 
-<h3 id="live">Array <code>live[]</code> — ao vivo agora</h3>
+<h3 id="live">Índice <code>liveScore[]</code> — ao vivo agora</h3>
+<p class="muted">
+  Array compacto no topo — o que a UI ao vivo lê. Os mesmos matches também estão
+  em <code>matches[]</code> (completo), com <code>live: true</code>.
+</p>
 <table>
-  <tr><th>Campo</th><th>Valor em live</th></tr>
-  <tr><td><code>time</code></td><td><code>null</code> (o markup live não traz horário)</td></tr>
-  <tr><td><code>live</code></td><td><code>true</code></td></tr>
-  <tr><td><code>score</code></td><td><code>{ "rounds": {"Nemiga":13,"Vitality":8}, "maps": {"Nemiga":1,"Vitality":0} }</code></td></tr>
-  <tr><td><code>series</code> / <code>stats</code> / <code>mvp</code></td><td>presentes se a página do match foi lida</td></tr>
+  <tr><th>Campo</th><th>Conteúdo</th></tr>
+  <tr><td><code>match_id</code> / <code>url</code> / <code>event</code> / <code>format</code> / <code>teams</code></td><td>identificação</td></tr>
+  <tr><td><code>score</code></td><td><code>{ "rounds": {"Nemiga":13,"Vitality":8}, "maps": {...} }</code> — <b>fonte mais fresca</b> do placar</td></tr>
+  <tr><td><code>series_format</code> / <code>current_map</code> / <code>next_map</code> / <code>finished_maps</code></td><td>progresso da série</td></tr>
 </table>
 <p class="muted">
   <code>score.rounds</code> = placar do <b>mapa atual</b> ·
@@ -282,24 +265,23 @@ async function carregar() {
   const r = await fetch(URL, { cache: "no-store" });
   const data = await r.json();
 
-  // 1) Jogos de hoje
-  const hoje = data.days.find(d => d.date === new Date().toISOString().slice(0, 10))
-            ?? data.days[0];
+  // 1) Jogos de hoje (array flat — filtra por date)
+  const hoje = new Date().toISOString().slice(0, 10);
+  const deHoje = data.matches.filter(m => m.date === hoje);
 
-  // 2) Ao vivo agora
-  for (const m of data.live) {
+  // 2) Ao vivo agora (índice compacto)
+  for (const m of data.liveScore) {
     const placar = Object.entries(m.score?.rounds ?? {})
       .map(([t, v]) => `${t} ${v}`).join(" x ");
-    console.log(`AO VIVO: ${placar}`);
+    console.log(`AO VIVO: ${placar} [${m.current_map ?? "?"}]`, m.event);
   }
 
   // 3) Agenda do dia com séries e MVP
-  for (const m of hoje.matches) {
+  for (const m of deHoje) {
     const br  = m.teams.filter(t => t.is_brazil).map(t => t.name);
-    const adv = m.teams.filter(t => !t.is_brazil).map(t => t.name);
     const mapa  = m.series?.current_map ? ` [${m.series.current_map}]` : "";
     const mvp   = m.mvp ? ` MVP: ${m.mvp.nick} (${m.mvp.rating})` : "";
-    console.log(`${m.time} ${br} x ${adv}${mapa} — ${m.event}${mvp}`);
+    console.log(`${m.time} ${br.join(" x ")} — ${m.event}${mapa}${mvp}`);
   }
 
   return data;
@@ -319,8 +301,8 @@ async function carregar() {
 <h3 id="ui">Campos mais úteis para UI</h3>
 <table>
   <tr><th>UI</th><th>Campo</th></tr>
-  <tr><td>Badge "AO VIVO"</td><td><code>live === true</code> ou presença em <code>data.live</code></td></tr>
-  <tr><td>Placar do mapa atual</td><td><code>score.rounds</code> · série <code>score.maps</code></td></tr>
+  <tr><td>Badge "AO VIVO"</td><td>presença em <code>data.liveScore</code> (ou <code>live === true</code> em <code>matches[]</code>)</td></tr>
+  <tr><td>Placar do mapa atual</td><td><code>liveScore[].score.rounds</code> · série <code>score.maps</code></td></tr>
   <tr><td>Progresso da série</td><td><code>series.maps[]</code> com <code>status</code> (✓ ● ○)</td></tr>
   <tr><td>Selo "MVP"</td><td><code>mvp.nick</code> + <code>mvp.rating</code></td></tr>
   <tr><td>Tag do campeonato + prêmio</td><td><code>event</code> + <code>event_info.prize</code></td></tr>
@@ -330,18 +312,31 @@ async function carregar() {
 
 <h2 id="ops">5. Operação (GitHub Actions)</h2>
 <table>
-  <tr><th>Workflow</th><th>Gatilho</th><th>O que faz</th></tr>
+  <tr><th>Componente</th><th>Gatilho</th><th>O que faz</th></tr>
   <tr>
-    <td><b>Jogos BR (HLTV)</b></td>
+    <td><b>Jogos BR (HLTV)</b> <span class="muted">(Actions)</span></td>
     <td>cron <code>10 3 * * *</code> (00:10 BRT) + manual</td>
     <td>roda <code>hltv/scraper.py</code> → commita <code>brazil-matches.json</code> → Pages publica</td>
   </tr>
   <tr>
+    <td><b>Render (free tier)</b> <span class="muted">(runtime)</span></td>
+    <td>loop interno a cada <code>REFRESH_MIN</code> (15 min)</td>
+    <td><code>python server.py</code> serve o JSON e refaz o scraper em background — <b>sem commit/deploy</b></td>
+  </tr>
+  <tr>
     <td><b>Snapshot HLTV (events)</b></td>
     <td>manual (botão)</td>
-    <td>baixa <code>/events</code>, página de evento, <code>/highlights</code>, match live → <code>hltv/snapshots/</code></td>
+    <td>baixa páginas do HLTV → <code>hltv/snapshots/</code> (diagnóstico de markup)</td>
   </tr>
 </table>
+
+<div class="callout">
+  <b>🚀 Render — campos do serviço</b>
+  <b>Start Command:</b> <code>python server.py</code><br>
+  <b>Build Command:</b> <code>pip install -r requirements.txt</code><br>
+  <span class="muted">Free tier dorme ~75s sem tráfego → refresh pausa; ao acordar, o loop
+  refaz se o JSON estiver velho. Atualizar dado no Render NÃO é deploy.</span>
+</div>
 <ul>
   <li>Código: <code>hltv/scraper.py</code> · dependências: <code>hltv/requirements.txt</code></li>
   <li>Log de chamadas: <code>[n/20] GET ...</code> no stderr do workflow</li>

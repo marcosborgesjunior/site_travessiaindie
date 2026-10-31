@@ -61,48 +61,24 @@ Um match entra no JSON se **qualquer** um dos dois times for BR.
   "scraped_at": "2026-10-30T17:10:31+00:00",   // UTC, quando rodou
   "timezone": "America/Sao_Paulo",
   "total_matches": 10,
-  "http_calls": 12,          // chamadas HTTP desta execução (teto20)
+  "http_calls": 12,          // chamadas HTTP desta execução (teto 20)
 
-  "live": [ /* matches ao vivo AGORA — ver3.2 */ ],
+  "matches": [               // array FLAT: lives primeiro, depois data/hora — ver3.1
+    { /* match */ }
+  ],
 
-  "days": [                  // agrupado por dia (SP), ordenado
-    {
-      "date": "2026-10-30",
-      "weekday": "sexta",
-      "matches": [ /* ver3.1 */ ]
-    }
+  "liveScore": [             // índice compacto do que está AO VIVO — ver3.2
+    { /* volátil: placar, mapa atual */ }
   ]
 }
 ```
 
-###3.1 Objeto de match (em `days[].matches[]`)
+###3.1 Objeto de match (em `matches[]`)
 
 ```jsonc
 {
-  "series": {                // presente quando a página do match foi lida
-    "format": "md3",         // md3 (bo3) | md5 (bo5) — inferido
-    "current_map": "Mirage", // mapa em curso  (null se nenhum)
-    "next_map": "Cache",     // próximo mapa    (null se não há)
-    "finished_maps": ["Dust2"],
-    "maps": [
-      {
-        "name": "Dust2", "status": "done",
-        "score": {"MOUZ":6,"FURIA":13}, "half": "( 6 : 6 ; 0 : 7 )",
-        "stats_url": "https://www.hltv.org/stats/matches/mapstatsid/243227/...",
-        // só em mapas FINALIZADOS (bloco embutido na página, zero requests):
-        "players": [                     // lista PLANA —10 jogadores
-          { "nick":"molodoy", "team":"FURIA", "kills":24, "deaths":9,
-            "kd_ratio":2.67, "adr":98.9, "kast":89.5, "rating":1.86 },
-          ...
-        ],
-        "mvp": { "nick":"molodoy", "team":"FURIA", "rating":1.86, ... }  // maior rating DO MAPA
-      },
-      { "name": "Mirage", "status": "live", "score": {"MOUZ":4,"FURIA":8}, "half": "( 4 : 8 ; -:- )" },
-      { "name": "Cache",  "status": "upcoming" }
-    ]
-  },
-
-  "time": "12:00",           // SP; null só em live[] (sem horário no markup)
+  "time": "12:00",           // SP; null em matches ao vivo (markup sem horário)
+  "date": "2026-10-30",      // SP — em lives = hoje (acontecendo agora)
   "event": "PGL Masters Bucharest 2026",   // headline do wrapper
   "event_id": "8050",        // id em hltv.org/events/<id>/ — cruza com índice
   "format": "bo3",           // formato cru do HLTV (bo1/bo3/bo5)
@@ -145,16 +121,16 @@ Um match entra no JSON se **qualquer** um dos dois times for BR.
 }
 ```
 
-###3.2 Array `live[]` (ao vivo agora)
+###3.2 Índice `liveScore[]` (ao vivo agora)
 
-Mesmos campos do match, com diferenças:
+Array compacto no topo — o que a UI ao vivo lê. Os mesmos matches também
+estão em `matches[]` (completo), com `live: true`.
 
-| Campo | Valor em live |
+| Campo | Conteúdo |
 | --- | --- |
-| `time` | `null` (o markup live não traz horário) |
-| `live` | `true` |
-| `score` | `{ "rounds": {"Nemiga":13,"Vitality":8}, "maps": {"Nemiga":1,"Vitality":0} }` |
-| `series`/`stats`/`mvp` | presentes se a página do match foi lida |
+| `match_id` / `url` / `event` / `format` / `teams` | identificação |
+| `score` | `{ "rounds": {"Nemiga":13,"Vitality":8}, "maps": {...} }` — **fonte mais fresca** do placar |
+| `series_format` / `current_map` / `next_map` / `finished_maps` | progresso da série |
 
 `score.rounds` = placar do **mapa atual**; `score.maps` = **série** (maps vencidos).
 Vem do SSR do `/matches` — atualiza a cada execução, **não** em tempo real.
@@ -198,24 +174,23 @@ async function carregar() {
   const r = await fetch(URL, { cache: "no-store" });
   const data = await r.json();
 
-  //1) Jogos de hoje
-  const hoje = data.days.find(d => d.date === new Date().toISOString().slice(0, 10))
-            ?? data.days[0];
+  //1) Jogos de hoje (array flat — filtra por date)
+  const hoje = new Date().toISOString().slice(0, 10);
+  const deHoje = data.matches.filter(m => m.date === hoje);
 
-  //2) Ao vivo agora
-  for (const m of data.live) {
+  //2) Ao vivo agora (índice compacto)
+  for (const m of data.liveScore) {
     const placar = Object.entries(m.score?.rounds ?? {})
       .map(([t, v]) => `${t} ${v}`).join(" x ");
-    console.log(`AO VIVO: ${placar}`, m.teams.map(t => t.name).join(" x "));
+    console.log(`AO VIVO: ${placar} [${m.current_map ?? "?"}]`, m.event);
   }
 
   //3) Agenda do dia com séries e MVP
-  for (const m of hoje.matches) {
+  for (const m of deHoje) {
     const br = m.teams.filter(t => t.is_brazil).map(t => t.name);
-    const s = m.series;
-    const mapa = s?.current_map ? ` [${s.current_map}]` : "";
+    const mapa = m.series?.current_map ? ` [${m.series.current_map}]` : "";
     const mvp = m.mvp ? ` MVP: ${m.mvp.nick} (${m.mvp.rating})` : "";
-    console.log(`${m.time} ${br.join(" x ")} vs ${m.teams.filter(t => !t.is_brazil).map(t => t.name).join(" x ")}${mapa} — ${m.event}${mvp}`);
+    console.log(`${m.time} ${br.join(" x ")} — ${m.event}${mapa}${mvp}`);
   }
 
   return data;
@@ -240,8 +215,8 @@ function useJogosBR() {
 
 | UI | Campo |
 | --- | --- |
-| Badge "AO VIVO" | `live === true` ou presença em `data.live` |
-| Placar do mapa atual | `score.rounds` / série `score.maps` |
+| Badge "AO VIVO" | presença em `data.liveScore` (ou `live === true` em `matches[]`) |
+| Placar do mapa atual | `liveScore[].score.rounds` / série `score.maps` |
 | Progresso da série | `series.maps[]` com `status` (✓ ● ○) |
 | Selo "MVP" | `mvp.nick` + `mvp.rating` |
 | Tag do campeonato + prêmio | `event` + `event_info.prize` |
@@ -255,7 +230,25 @@ function useJogosBR() {
 | Workflow | Gatilho | O que faz |
 | --- | --- | --- |
 | **Jogos BR (HLTV)** | cron `10 3 * * *` (00:10 BRT) + manual | roda `hltv/scraper.py` → commita `brazil-matches.json` → Pages publica |
-| **Snapshot HLTV (events)** | manual (botão) | baixa `/events`, página de evento, `/highlights`, match live → `hltv/snapshots/` (diagnóstico de markup) |
+
+### Hospedagem de runtime: Render (free tier)
+
+O site estático (Pages) é publicado pelo cron — **o JSON fresco em runtime**
+vai para o Render, onde atualizar dado **não é deploy**:
+
+| Campo Render | Valor |
+| --- | --- |
+| **Start Command** | `python server.py` |
+| **Build Command** | `pip install -r requirements.txt` |
+
+- `server.py` serve `/brazil-matches.json` (CORS, `Cache-Control: no-store`)
+  e roda o scraper em **background a cada `REFRESH_MIN` min** (default15),
+  nunca sobrepondo runs — **zero commits** para atualizar.
+- **Free tier dorme** após ~75s sem tráfego: enquanto dorme não há refresh;
+  ao acordar (1ª requisição) o loop refaz se o JSON estiver velho.
+  Confirme no seu dashboard as horas/mês do plano free.
+- Enquanto isso, o **Snapshot HLTV (events)** (manual) continua para
+  diagnóstico de markup em `hltv/snapshots/`.
 
 - Código do scraper: `hltv/scraper.py` (repositório `site_travessiaindie`)
 - Dependências: `hltv/requirements.txt` (`curl_cffi`, `beautifulsoup4`, `tzdata`)
