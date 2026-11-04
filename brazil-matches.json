@@ -1,167 +1,41 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-11-03T10:52:01+00:00",
+  "scraped_at": "2026-11-04T10:53:49+00:00",
   "timezone": "America/Sao_Paulo",
-  "total_matches": 3,
+  "total_matches": 2,
   "matches": [
     {
-      "series": {
-        "format": "md3",
-        "current_map": "Ancient",
-        "next_map": "Ancient - 54%",
-        "finished_maps": [],
-        "maps": [
-          {
-            "name": "Ancient - 54%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Inferno - 58%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 53%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Cache - 51%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 53%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Inferno - 58%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Ancient - 54%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 43%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Inferno - 58%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Ancient",
-            "status": "live",
-            "score": {
-              "FURIA": 4,
-              "Natus Vincere": 8
-            },
-            "half": "( 4 : 8 ; -:- )"
-          },
-          {
-            "name": "Nuke",
-            "status": "upcoming"
-          },
-          {
-            "name": "Cache",
-            "status": "upcoming"
-          }
-        ]
-      },
       "time": null,
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "event": "IEM Beijing 2026",
       "event_id": "8245",
       "format": "bo3",
       "live": true,
-      "stars": 3,
-      "match_id": "2399996",
-      "url": "https://www.hltv.org/matches/2399996/furia-vs-natus-vincere-iem-beijing-2026",
+      "stars": 2,
+      "match_id": "2400005",
+      "url": "https://www.hltv.org/matches/2400005/the-mongolz-vs-furia-iem-beijing-2026",
       "teams": [
+        {
+          "name": "The MongolZ",
+          "country": null,
+          "is_brazil": false
+        },
         {
           "name": "FURIA",
           "country": "Brazil",
           "is_brazil": true
-        },
-        {
-          "name": "Natus Vincere",
-          "country": null,
-          "is_brazil": false
         }
       ],
       "score": {
         "rounds": {
-          "FURIA": 4,
-          "Natus Vincere": 8
+          "The MongolZ": 8,
+          "FURIA": 10
         },
         "maps": {
-          "FURIA": 0,
-          "Natus Vincere": 0
+          "The MongolZ": 0,
+          "FURIA": 0
         }
       },
-      "watch": [
-        "https://www.youtube.com/watch?v=KZf_z4-h0xU",
-        "https://www.twitch.tv/strogo",
-        "https://www.youtube.com/watch?v=WGVxudt_pcE",
-        "https://www.twitch.tv/eslcs",
-        "https://www.youtube.com/watch?v=vKT2EgetbOE",
-        "https://www.youtube.com/watch?v=kAAw_Sh4PcI",
-        "https://www.twitch.tv/bysl4m",
-        "https://www.youtube.com/watch?v=A3r2QcM0ZOA",
-        "https://www.twitch.tv/skywhywalker",
-        "https://www.twitch.tv/CS2_maincast",
-        "https://kick.com/gaules",
-        "https://www.youtube.com/watch?v=5aPo9N-3BjE",
-        "https://www.youtube.com/watch?v=nOPiZHcETGs",
-        "https://www.youtube.com/watch?v=aQHvUfdrM8A",
-        "https://www.twitch.tv/cs2_paragon_ru",
-        "https://www.twitch.tv/pelaajatcom",
-        "https://www.twitch.tv/fl0m",
-        "https://www.youtube.com/watch?v=ZBOD4_1ZyfY",
-        "https://kick.com/eslcs",
-        "https://www.youtube.com/watch?v=6fF0NNoaIYk",
-        "https://www.twitch.tv/croissantstrike",
-        "https://www.twitch.tv/watchfulTV",
-        "https://www.twitch.tv/izakooo",
-        "https://www.youtube.com/watch?v=4DPCGfim--A",
-        "https://kick.com/jaxi",
-        "https://www.twitch.tv/rtparenacs",
-        "https://www.youtube.com/watch?v=ejhICrHv7mk",
-        "https://kick.com/michel",
-        "https://www.youtube.com/watch?v=YmSw7zvz2_8",
-        "https://www.twitch.tv/keliencs",
-        "https://www.twitch.tv/psp1g",
-        "https://kick.com/rootthegamer",
-        "https://kick.com/elmorocho7",
-        "https://www.twitch.tv/zonixxcs",
-        "https://kick.com/cskyf",
-        "https://www.twitch.tv/madhousetv_",
-        "https://www.youtube.com/watch?v=mgVdQBruV5I",
-        "https://www.twitch.tv/redcs",
-        "https://www.youtube.com/watch?v=VD4_CxDNj-Y",
-        "https://www.youtube.com/watch?v=xL_RjHXS0To",
-        "https://kick.com/polex",
-        "https://www.twitch.tv/michel",
-        "https://www.twitch.tv/polex",
-        "https://www.twitch.tv/esportstudion",
-        "https://www.youtube.com/watch?v=M1cwdAWHdg8",
-        "https://www.youtube.com/watch?v=fuX9KHGitCY",
-        "https://www.twitch.tv/cyberfocus",
-        "https://www.twitch.tv/Sashacheer",
-        "https://www.twitch.tv/rootthegamer",
-        "https://www.youtube.com/watch?v=VZrXX_Kpt70",
-        "https://www.youtube.com/watch?v=qHGWxcRB10w",
-        "https://kick.com/peacemaker",
-        "https://kick.com/pelaajatcom",
-        "https://www.twitch.tv/bida",
-        "https://kick.com/werty",
-        "https://kick.com/fl0m",
-        "https://www.twitch.tv/peacemakerl",
-        "https://kick.com/watchfultv",
-        "https://kick.com/tvarenaesport",
-        "https://kick.com/bida",
-        "https://kick.com/esportstudion",
-        "https://kick.com/zonixx",
-        "https://www.twitch.tv/ViperDemon"
-      ],
       "event_info": {
         "name": "IEM Beijing 2026",
         "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
@@ -171,165 +45,6 @@
       }
     },
     {
-      "series": {
-        "format": "md3",
-        "current_map": null,
-        "next_map": "Ancient - 59%",
-        "finished_maps": [],
-        "maps": [
-          {
-            "name": "Ancient - 59%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 79%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 82%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 82%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Nuke - 30%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 79%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 82%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Cache - 22%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 79%",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          }
-        ]
-      },
-      "time": "08:00",
-      "date": "2026-11-03",
-      "event": "IEM Beijing 2026",
-      "event_id": "8245",
-      "format": "bo3",
-      "live": false,
-      "stars": 1,
-      "match_id": "2399997",
-      "url": "https://www.hltv.org/matches/2399997/legacy-vs-b8-iem-beijing-2026",
-      "teams": [
-        {
-          "name": "Legacy",
-          "country": "Brazil",
-          "is_brazil": true
-        },
-        {
-          "name": "B8",
-          "country": null,
-          "is_brazil": false
-        }
-      ],
-      "watch": [
-        "https://www.twitch.tv/watchfulTVb",
-        "https://www.twitch.tv/cs2_paragon_ru2",
-        "https://www.twitch.tv/CS2_maincast2",
-        "https://www.twitch.tv/croissantstrike2",
-        "https://www.youtube.com/watch?v=MBJT33vOjV0",
-        "https://www.youtube.com/watch?v=hlOZsMwo6ZE",
-        "https://www.twitch.tv/tris_mara",
-        "https://kick.com/tris_mara",
-        "https://kick.com/locomas",
-        "https://www.youtube.com/watch?v=Ehe2NnQZ4Gs",
-        "https://www.twitch.tv/mgfongabe",
-        "https://kick.com/watchfultvb",
-        "https://www.twitch.tv/vilacattv",
-        "https://www.youtube.com/watch?v=MQ4R7dmUMKU",
-        "https://kick.com/vilacattv"
-      ],
-      "event_info": {
-        "name": "IEM Beijing 2026",
-        "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
-        "start": "2026-11-02",
-        "end": "2026-11-08",
-        "lan": true
-      }
-    },
-    {
-      "series": {
-        "format": "md3",
-        "current_map": null,
-        "next_map": "Mirage - 68%",
-        "finished_maps": [],
-        "maps": [
-          {
-            "name": "Mirage - 68%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Inferno - 54%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 60%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 68%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Nuke - 43%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 60%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Cache - 41%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 68%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 60%",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          }
-        ]
-      },
       "time": "23:00",
       "date": "2026-11-10",
       "event": "BLAST Rivals 2026 Season 2",
@@ -351,17 +66,6 @@
           "is_brazil": true
         }
       ],
-      "watch": [
-        "https://www.youtube.com/watch?v=WGVxudt_pcE",
-        "https://kick.com/gaules",
-        "https://www.youtube.com/watch?v=6fF0NNoaIYk",
-        "https://www.twitch.tv/izakooo",
-        "https://www.twitch.tv/blastpremier",
-        "https://www.youtube.com/watch?v=6Thw4ZbMPdI",
-        "https://www.twitch.tv/97zoner",
-        "https://www.twitch.tv/benccce",
-        "https://kick.com/blastpremier"
-      ],
       "event_info": {
         "name": "BLAST Rivals 2026 Season 2",
         "url": "https://www.hltv.org/events/8251/blast-rivals-2026-season-2",
@@ -379,37 +83,37 @@
   ],
   "liveScore": [
     {
-      "match_id": "2399996",
-      "url": "https://www.hltv.org/matches/2399996/furia-vs-natus-vincere-iem-beijing-2026",
+      "match_id": "2400005",
+      "url": "https://www.hltv.org/matches/2400005/the-mongolz-vs-furia-iem-beijing-2026",
       "event": "IEM Beijing 2026",
       "format": "bo3",
       "teams": [
         {
+          "name": "The MongolZ",
+          "country": null,
+          "is_brazil": false
+        },
+        {
           "name": "FURIA",
           "country": "Brazil",
           "is_brazil": true
-        },
-        {
-          "name": "Natus Vincere",
-          "country": null,
-          "is_brazil": false
         }
       ],
       "score": {
         "rounds": {
-          "FURIA": 4,
-          "Natus Vincere": 8
+          "The MongolZ": 8,
+          "FURIA": 10
         },
         "maps": {
-          "FURIA": 0,
-          "Natus Vincere": 0
+          "The MongolZ": 0,
+          "FURIA": 0
         }
       },
-      "series_format": "md3",
-      "current_map": "Ancient",
-      "next_map": "Ancient - 54%",
+      "series_format": null,
+      "current_map": null,
+      "next_map": null,
       "finished_maps": []
     }
   ],
-  "http_calls": 5
+  "http_calls": 4
 }
