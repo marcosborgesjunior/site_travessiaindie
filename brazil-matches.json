@@ -1,41 +1,119 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-11-04T10:53:49+00:00",
+  "scraped_at": "2026-11-05T10:51:14+00:00",
   "timezone": "America/Sao_Paulo",
   "total_matches": 2,
   "matches": [
     {
-      "time": null,
-      "date": "2026-11-04",
+      "series": {
+        "format": "md3",
+        "current_map": null,
+        "next_map": "Mirage - 57%",
+        "finished_maps": [],
+        "maps": [
+          {
+            "name": "Mirage - 57%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Dust2 - 69%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Nuke - 78%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Ancient - 54%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Dust2 - 69%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Nuke - 78%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Mirage - 57%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Cache - 33%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Nuke - 78%",
+            "status": "upcoming"
+          },
+          {
+            "name": "TBA",
+            "status": "upcoming"
+          },
+          {
+            "name": "TBA",
+            "status": "upcoming"
+          },
+          {
+            "name": "TBA",
+            "status": "upcoming"
+          }
+        ]
+      },
+      "time": "06:45",
+      "date": "2026-11-06",
       "event": "IEM Beijing 2026",
       "event_id": "8245",
       "format": "bo3",
-      "live": true,
-      "stars": 2,
-      "match_id": "2400005",
-      "url": "https://www.hltv.org/matches/2400005/the-mongolz-vs-furia-iem-beijing-2026",
+      "live": false,
+      "stars": 3,
+      "match_id": "2400007",
+      "url": "https://www.hltv.org/matches/2400007/furia-vs-betboom-iem-beijing-2026",
       "teams": [
-        {
-          "name": "The MongolZ",
-          "country": null,
-          "is_brazil": false
-        },
         {
           "name": "FURIA",
           "country": "Brazil",
           "is_brazil": true
+        },
+        {
+          "name": "BETBOOM",
+          "country": null,
+          "is_brazil": false
         }
       ],
-      "score": {
-        "rounds": {
-          "The MongolZ": 8,
-          "FURIA": 10
-        },
-        "maps": {
-          "The MongolZ": 0,
-          "FURIA": 0
-        }
-      },
+      "watch": [
+        "https://www.twitch.tv/eslcs",
+        "https://kick.com/eslcs",
+        "https://www.twitch.tv/bysl4m",
+        "https://www.youtube.com/watch?v=SH2T216ir1k",
+        "https://www.twitch.tv/rootthegamer",
+        "https://www.twitch.tv/pelaajatcom",
+        "https://www.youtube.com/watch?v=-ewjKe-eaQw",
+        "https://www.twitch.tv/watchfulTV",
+        "https://www.twitch.tv/x9nium",
+        "https://www.youtube.com/watch?v=8xxpmhCzbBc",
+        "https://www.twitch.tv/cs2_paragon_ru",
+        "https://www.youtube.com/watch?v=RPGIAQOSyOg",
+        "https://www.twitch.tv/mgfongabe",
+        "https://www.youtube.com/watch?v=xtPlkrwqtOU",
+        "https://kick.com/tris_mara",
+        "https://kick.com/watchfultv",
+        "https://kick.com/x9nium",
+        "https://kick.com/gaules",
+        "https://www.youtube.com/watch?v=wyMKSTY_cms",
+        "https://kick.com/rootthegamer",
+        "https://www.youtube.com/watch?v=KE0_K5vZQxk",
+        "https://www.youtube.com/watch?v=F320ixGjvGU",
+        "https://www.twitch.tv/madhousetv_",
+        "https://kick.com/jaxi",
+        "https://www.youtube.com/watch?v=UDkiko2IKdY",
+        "https://www.twitch.tv/tris_mara",
+        "https://kick.com/polex",
+        "https://www.twitch.tv/polex",
+        "https://kick.com/pelaajatcom",
+        "https://www.youtube.com/watch?v=5oABLc_8I0k"
+      ],
       "event_info": {
         "name": "IEM Beijing 2026",
         "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
@@ -81,39 +159,6 @@
       }
     }
   ],
-  "liveScore": [
-    {
-      "match_id": "2400005",
-      "url": "https://www.hltv.org/matches/2400005/the-mongolz-vs-furia-iem-beijing-2026",
-      "event": "IEM Beijing 2026",
-      "format": "bo3",
-      "teams": [
-        {
-          "name": "The MongolZ",
-          "country": null,
-          "is_brazil": false
-        },
-        {
-          "name": "FURIA",
-          "country": "Brazil",
-          "is_brazil": true
-        }
-      ],
-      "score": {
-        "rounds": {
-          "The MongolZ": 8,
-          "FURIA": 10
-        },
-        "maps": {
-          "The MongolZ": 0,
-          "FURIA": 0
-        }
-      },
-      "series_format": null,
-      "current_map": null,
-      "next_map": null,
-      "finished_maps": []
-    }
-  ],
+  "liveScore": [],
   "http_calls": 4
 }
