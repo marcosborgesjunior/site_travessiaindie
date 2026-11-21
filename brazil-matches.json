@@ -1,164 +1,41 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-11-05T10:51:14+00:00",
+  "scraped_at": "2026-11-21T10:58:42+00:00",
   "timezone": "America/Sao_Paulo",
-  "total_matches": 2,
+  "total_matches": 1,
   "matches": [
     {
-      "series": {
-        "format": "md3",
-        "current_map": null,
-        "next_map": "Mirage - 57%",
-        "finished_maps": [],
-        "maps": [
-          {
-            "name": "Mirage - 57%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 69%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Nuke - 78%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Ancient - 54%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Dust2 - 69%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Nuke - 78%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Mirage - 57%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Cache - 33%",
-            "status": "upcoming"
-          },
-          {
-            "name": "Nuke - 78%",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          },
-          {
-            "name": "TBA",
-            "status": "upcoming"
-          }
-        ]
-      },
-      "time": "06:45",
-      "date": "2026-11-06",
-      "event": "IEM Beijing 2026",
-      "event_id": "8245",
-      "format": "bo3",
+      "time": "01:00",
+      "date": "2026-11-24",
+      "event": "PGL Major Singapore 2026 Stage 1",
+      "event_id": "9303",
+      "format": "bo1",
       "live": false,
-      "stars": 3,
-      "match_id": "2400007",
-      "url": "https://www.hltv.org/matches/2400007/furia-vs-betboom-iem-beijing-2026",
+      "stars": 1,
+      "match_id": "2400494",
+      "url": "https://www.hltv.org/matches/2400494/heroic-vs-imperial-pgl-major-singapore-2026-stage-1",
       "teams": [
         {
-          "name": "FURIA",
-          "country": "Brazil",
-          "is_brazil": true
-        },
-        {
-          "name": "BETBOOM",
+          "name": "HEROIC",
           "country": null,
           "is_brazil": false
-        }
-      ],
-      "watch": [
-        "https://www.twitch.tv/eslcs",
-        "https://kick.com/eslcs",
-        "https://www.twitch.tv/bysl4m",
-        "https://www.youtube.com/watch?v=SH2T216ir1k",
-        "https://www.twitch.tv/rootthegamer",
-        "https://www.twitch.tv/pelaajatcom",
-        "https://www.youtube.com/watch?v=-ewjKe-eaQw",
-        "https://www.twitch.tv/watchfulTV",
-        "https://www.twitch.tv/x9nium",
-        "https://www.youtube.com/watch?v=8xxpmhCzbBc",
-        "https://www.twitch.tv/cs2_paragon_ru",
-        "https://www.youtube.com/watch?v=RPGIAQOSyOg",
-        "https://www.twitch.tv/mgfongabe",
-        "https://www.youtube.com/watch?v=xtPlkrwqtOU",
-        "https://kick.com/tris_mara",
-        "https://kick.com/watchfultv",
-        "https://kick.com/x9nium",
-        "https://kick.com/gaules",
-        "https://www.youtube.com/watch?v=wyMKSTY_cms",
-        "https://kick.com/rootthegamer",
-        "https://www.youtube.com/watch?v=KE0_K5vZQxk",
-        "https://www.youtube.com/watch?v=F320ixGjvGU",
-        "https://www.twitch.tv/madhousetv_",
-        "https://kick.com/jaxi",
-        "https://www.youtube.com/watch?v=UDkiko2IKdY",
-        "https://www.twitch.tv/tris_mara",
-        "https://kick.com/polex",
-        "https://www.twitch.tv/polex",
-        "https://kick.com/pelaajatcom",
-        "https://www.youtube.com/watch?v=5oABLc_8I0k"
-      ],
-      "event_info": {
-        "name": "IEM Beijing 2026",
-        "url": "https://www.hltv.org/events/8245/iem-beijing-2026",
-        "start": "2026-11-02",
-        "end": "2026-11-08",
-        "lan": true
-      }
-    },
-    {
-      "time": "23:00",
-      "date": "2026-11-10",
-      "event": "BLAST Rivals 2026 Season 2",
-      "event_id": "8251",
-      "format": "bo3",
-      "live": false,
-      "stars": 2,
-      "match_id": "2399851",
-      "url": "https://www.hltv.org/matches/2399851/legacy-vs-furia-blast-rivals-2026-season-2",
-      "teams": [
-        {
-          "name": "Legacy",
-          "country": "Brazil",
-          "is_brazil": true
         },
         {
-          "name": "FURIA",
+          "name": "Imperial",
           "country": "Brazil",
           "is_brazil": true
         }
       ],
       "event_info": {
-        "name": "BLAST Rivals 2026 Season 2",
-        "url": "https://www.hltv.org/events/8251/blast-rivals-2026-season-2",
-        "start": "2026-11-11",
-        "end": "2026-11-15",
-        "location": "Chek Lap Kok, Hong Kong (Hong Kong)",
-        "prize": "$1,000,000",
-        "prize_distribution": {
-          "player_share": "$350,000",
-          "club_share": "$650,000"
-        },
-        "teams_count": 8
+        "name": "PGL Major Singapore 2026 Stage 1",
+        "url": "https://www.hltv.org/events/9303/pgl-major-singapore-2026-stage-1",
+        "start": "2026-11-24",
+        "end": "2026-11-27",
+        "location": "Singapore (Singapore)",
+        "teams_count": 16
       }
     }
   ],
   "liveScore": [],
-  "http_calls": 4
+  "http_calls": 3
 }
