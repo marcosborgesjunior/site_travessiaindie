@@ -1,29 +1,29 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-11-21T10:58:42+00:00",
+  "scraped_at": "2026-11-24T13:37:20+00:00",
   "timezone": "America/Sao_Paulo",
   "total_matches": 1,
   "matches": [
     {
-      "time": "01:00",
-      "date": "2026-11-24",
+      "time": "05:00",
+      "date": "2026-11-25",
       "event": "PGL Major Singapore 2026 Stage 1",
       "event_id": "9303",
-      "format": "bo1",
+      "format": "bo3",
       "live": false,
       "stars": 1,
-      "match_id": "2400494",
-      "url": "https://www.hltv.org/matches/2400494/heroic-vs-imperial-pgl-major-singapore-2026-stage-1",
+      "match_id": "2400569",
+      "url": "https://www.hltv.org/matches/2400569/imperial-vs-flyquest-pgl-major-singapore-2026-stage-1",
       "teams": [
-        {
-          "name": "HEROIC",
-          "country": null,
-          "is_brazil": false
-        },
         {
           "name": "Imperial",
           "country": "Brazil",
           "is_brazil": true
+        },
+        {
+          "name": "FlyQuest",
+          "country": null,
+          "is_brazil": false
         }
       ],
       "event_info": {
@@ -31,8 +31,7 @@
         "url": "https://www.hltv.org/events/9303/pgl-major-singapore-2026-stage-1",
         "start": "2026-11-24",
         "end": "2026-11-27",
-        "location": "Singapore (Singapore)",
-        "teams_count": 16
+        "lan": true
       }
     }
   ],
