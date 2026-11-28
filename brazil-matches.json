@@ -1,36 +1,85 @@
 {
   "source": "https://www.hltv.org/matches",
-  "scraped_at": "2026-11-24T13:37:20+00:00",
+  "scraped_at": "2026-11-28T11:41:08+00:00",
   "timezone": "America/Sao_Paulo",
   "total_matches": 1,
   "matches": [
     {
-      "time": "05:00",
-      "date": "2026-11-25",
-      "event": "PGL Major Singapore 2026 Stage 1",
-      "event_id": "9303",
-      "format": "bo3",
+      "series": {
+        "format": "md3",
+        "current_map": null,
+        "next_map": "Nuke - 32%",
+        "finished_maps": [],
+        "maps": [
+          {
+            "name": "Nuke - 32%",
+            "status": "upcoming"
+          },
+          {
+            "name": "Nuke - 33%",
+            "status": "upcoming"
+          },
+          {
+            "name": "TBA",
+            "status": "upcoming"
+          }
+        ]
+      },
+      "time": "08:45",
+      "date": "2026-11-28",
+      "event": "PGL Major Singapore 2026 Stage 2",
+      "event_id": "9304",
+      "format": "bo1",
       "live": false,
       "stars": 1,
-      "match_id": "2400569",
-      "url": "https://www.hltv.org/matches/2400569/imperial-vs-flyquest-pgl-major-singapore-2026-stage-1",
+      "match_id": "2400595",
+      "url": "https://www.hltv.org/matches/2400595/mibr-vs-imperial-pgl-major-singapore-2026-stage-2",
       "teams": [
         {
-          "name": "Imperial",
+          "name": "MIBR",
           "country": "Brazil",
           "is_brazil": true
         },
         {
-          "name": "FlyQuest",
-          "country": null,
-          "is_brazil": false
+          "name": "Imperial",
+          "country": "Brazil",
+          "is_brazil": true
         }
       ],
+      "watch": [
+        "https://kick.com/gaules",
+        "https://www.youtube.com/watch?v=1OoZJoHCCyk",
+        "https://www.twitch.tv/pgl_cs2",
+        "https://www.twitch.tv/cs2_paragon_ru3",
+        "https://www.twitch.tv/CS2_maincast2",
+        "https://kick.com/michel",
+        "https://kick.com/polex",
+        "https://www.youtube.com/watch?v=VMn2rRt_XPY",
+        "https://kick.com/pglcs2",
+        "https://www.twitch.tv/watchfulTVb",
+        "https://www.youtube.com/watch?v=4E8wIruYhEU",
+        "https://www.twitch.tv/keliencs",
+        "https://www.youtube.com/watch?v=lizzJN5ZOyk",
+        "https://kick.com/elmorocho7",
+        "https://www.youtube.com/watch?v=JpbmT1p90ks",
+        "https://kick.com/barstooltv",
+        "https://www.twitch.tv/mgfongabe",
+        "https://kick.com/locomas",
+        "https://www.twitch.tv/okkocyber_b",
+        "https://www.twitch.tv/michel",
+        "https://www.youtube.com/watch?v=71CvJyIvRKw",
+        "https://kick.com/watchfultvb",
+        "https://www.twitch.tv/raulezs",
+        "https://kick.com/geemz",
+        "https://www.twitch.tv/peacemakerl",
+        "https://www.youtube.com/watch?v=jkdRAcdvuVs",
+        "https://kick.com/peacemaker"
+      ],
       "event_info": {
-        "name": "PGL Major Singapore 2026 Stage 1",
-        "url": "https://www.hltv.org/events/9303/pgl-major-singapore-2026-stage-1",
-        "start": "2026-11-24",
-        "end": "2026-11-27",
+        "name": "PGL Major Singapore 2026 Stage 2",
+        "url": "https://www.hltv.org/events/9304/pgl-major-singapore-2026-stage-2",
+        "start": "2026-11-28",
+        "end": "2026-12-01",
         "lan": true
       }
     }
